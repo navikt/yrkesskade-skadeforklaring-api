@@ -70,7 +70,10 @@ class VedleggController(val autentisertBruker: AutentisertBruker, val storageSer
         ]
     )
     fun slettVedlegg(@PathVariable("id") id: String): ResponseEntity<Void> {
-        storageService.slett(id, autentisertBruker.fodselsnummer)
+        val slettet = storageService.slett(id, autentisertBruker.fodselsnummer)
+        if (!slettet) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.status(HttpStatus.OK).build()
     }
 }

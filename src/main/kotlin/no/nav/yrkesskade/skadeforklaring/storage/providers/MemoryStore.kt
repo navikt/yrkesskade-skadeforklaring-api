@@ -25,6 +25,10 @@ object MemoryStore : Store {
     }
 
     override fun deleteBlob(blob: Blob): Boolean {
+        if (!storage.containsKey(blob.id)) {
+            return false
+        }
+
         storage.remove(blob.id)
         return true
     }
