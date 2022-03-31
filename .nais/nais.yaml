@@ -1,0 +1,69 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: "yrkesskade-skadeforklaring-api"
+  namespace: "yrkesskade"
+  labels:
+    "team": "yrkesskade"
+spec:
+  image: {{image}}
+  liveness:
+    path: "/api/internal/health"
+    port: 8080
+    initialDelay: 20
+    timeout: 60
+  readiness:
+    path: "/api/internal/health"
+    port: 8080
+    initialDelay: 20
+    timeout: 60
+  replicas:
+    min: 2
+    max: 2
+    cpuThresholdPercentage: 50
+  prometheus:
+    enabled: true
+    path: "/api/internal/prometheus"
+  accessPolicy:
+    inbound:
+      rules:
+        - application: yrkesskade-skadeforklaring-skjema
+    outbound:
+      external:
+        - host: unleash.nais.io
+  tokenx:
+    enabled: true
+
+  envFrom:
+    - configmap: loginservice-idporten
+    - secret: yrkesskade-skadeforklaring-api
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: {{springProfile}}
+    - name: GCP_PROJECT_ID
+      value: {{gcpProjectId}}
+  resources:
+    limits:
+      cpu: "2"
+      memory: "2Gi"
+    requests:
+      cpu: "200m"
+      memory: "1024Mi"
+  ingresses: 
+  {{#each ingresses as |url|}}
+    - {{url}}
+  {{/each}}
+  gcp:
+    bigQueryDatasets:
+      - name: yrkesskade_metrikker
+        permission: READWRITE
+    buckets:
+      - name: yrkesskade-skadeforklaring-vedlegg
+        lifecycleCondition:
+          age: 7
+          numNewerVersions: 2
+          withState: ANY
+  kafka:
+    pool: {{kafkaPool}}
+  secureLogs:
+    enabled: true

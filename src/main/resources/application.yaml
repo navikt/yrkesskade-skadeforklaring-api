@@ -1,0 +1,29 @@
+server:
+  servlet:
+    context-path: /api
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 8MB
+
+no.nav.security.jwt.issuer:
+  tokenx:
+    discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
+    accepted_audience: dev-gcp:yrkesskade:yrkesskade-skadeforklaring-api
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics, prometheus
+      base-path: /internal
+      path-mapping.prometheus: prometheus
+  metrics:
+    export.prometheus.enabled: true
+    tags:
+      application: ${spring.application.name}

@@ -1,0 +1,5 @@
+ingresses:
+- "https://yrkesskade-skadeforklaring-api.dev.intern.nav.no"
+springProfile: dev
+kafkaPool: nav-dev
+gcpProjectId: yrkesskade-dev-6235
