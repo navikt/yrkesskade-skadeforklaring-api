@@ -37,7 +37,7 @@ class SkadeforklaringControllerIT : AbstractTest() {
             tid = Tid(tidspunkt = Instant.now(), tidstype = "Tidspunkt", periode = null),
             vedleggtype = "Papir",
             vedleggreferanser = emptyList(),
-            fravaer = Fravaer(harFravaer = true, fravaertype = "Sykemelding", antallDager = 10),
+            fravaer = Fravaer(harFravaer = true, fravaertype = "Sykemelding"),
             behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = true)
         )
 

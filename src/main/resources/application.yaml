@@ -2,6 +2,7 @@ server:
   servlet:
     context-path: /api
 spring:
+  application.name: yrkesskade-skadeforklaring-api
   servlet:
     multipart:
       enabled: true
