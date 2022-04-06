@@ -1,3 +1,25 @@
+KAFKA_BROKERS: http://localhost:9092
+KAFKA_SCHEMA_REGISTRY: http://localhost:8081
+NAIS_CLUSTER_NAME: lokal
+GCP_TEAM_PROJECT_ID: stub
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS}
+    properties:
+      security.protocol: SASL_PLAINTEXT
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username="igroup" password="itest";
+      schema.registry.url: ${KAFKA_SCHEMA_REGISTRY}
+    producer:
+      client-id: srvp01
+
+# bruk oneshot for å opprette topic
+kafka:
+  topic:
+    skadeforklaring-innsendt: privat-yrkesskade-skademeldinginnsendt
 
 no.nav.security.jwt.issuer:
   tokenx:

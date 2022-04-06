@@ -7,6 +7,7 @@ import no.nav.yrkesskade.skadeforklaring.model.Fravaer
 import no.nav.yrkesskade.skadeforklaring.model.Skadeforklaring
 import no.nav.yrkesskade.skadeforklaring.model.Tid
 import no.nav.yrkesskade.skadeforklaring.test.AbstractTest
+import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaring
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -15,12 +16,14 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.time.Instant
 
 private const val SKADEFORKLARING_PATH = "/v1/skadeforklaringer"
 
 @AutoConfigureMockMvc
+@SpringBootTest
 class SkadeforklaringControllerIT : AbstractTest() {
 
     @Autowired
@@ -30,16 +33,7 @@ class SkadeforklaringControllerIT : AbstractTest() {
 
     @Test
     fun `send skadeforklaring - autentisert`() {
-        val skadeforklaring = Skadeforklaring(
-            identifikator = "12345678910",
-            "En kort arbeidsbeskrivelse",
-            "En litt lengre ulykkesbeskrivelse",
-            tid = Tid(tidspunkt = Instant.now(), tidstype = "Tidspunkt", periode = null),
-            vedleggtype = "Papir",
-            vedleggreferanser = emptyList(),
-            fravaer = Fravaer(harFravaer = true, fravaertype = "Sykemelding"),
-            behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = true)
-        )
+        val skadeforklaring = getEnkelskadeforklaring()
 
         val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
         val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
@@ -54,7 +48,7 @@ class SkadeforklaringControllerIT : AbstractTest() {
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(Charsets.UTF_8)
                 .content(skadeforklaring)
-        )
+        ).andDo(MockMvcResultHandlers.print())
 
     private fun skadeforklaringTilString(skadeforklaring: Skadeforklaring): String =
         objectMapper.writeValueAsString(skadeforklaring)
