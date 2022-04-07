@@ -1,5 +1,6 @@
 package no.nav.yrkesskade.skadeforklaring.api.v1
 
+import com.github.dockerjava.api.exception.BadRequestException
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.lang.IllegalStateException
 
 @ProtectedWithClaims(issuer = ISSUER, claimMap = [LEVEL])
 @Tag(name = "Skadeforklaring API", description = "Skadeforklaring API")
@@ -25,20 +27,32 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping(
     path = ["/v1/skadeforklaringer"],
     produces = [MediaType.APPLICATION_JSON_VALUE],
-    consumes = [MediaType.APPLICATION_JSON_VALUE])
-class SkadeforklaringController(private val autentisertBruker: AutentisertBruker, private val skadeforklaringService: SkadeforklaringService) {
+    consumes = [MediaType.APPLICATION_JSON_VALUE]
+)
+class SkadeforklaringController(
+    private val autentisertBruker: AutentisertBruker,
+    private val skadeforklaringService: SkadeforklaringService
+) {
 
     @Operation(summary = "Send inn skadeforklaring")
-    @ApiResponses(value = [
-        ApiResponse(
-            responseCode = "201", description = "Skadeforklaring opprettet",
-            content = [Content()]),
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201", description = "Skadeforklaring opprettet",
+                content = [Content()]
+            ),
             ApiResponse(responseCode = "500", description = "Internal Server Error", content = [Content()]),
-    ]
+        ]
     )
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun postSkadeforklaring(@RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
+        if (skadeforklaring.behandler.adresse?.postnummer != null) {
+            check(skadeforklaring.behandler.adresse.postnummer.toIntOrNull() != null,
+                { "Postnummer kan kun bestå av siffer" })
+        }
+
         skadeforklaringService.sendMelding(skadeforklaring, Spraak.NB)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
+
 }

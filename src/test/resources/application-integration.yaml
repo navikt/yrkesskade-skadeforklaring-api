@@ -1,0 +1,37 @@
+logging.level.org.springframework: INFO
+logging.level.no.nav: DEBUG
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS}
+    consumer:
+      auto-offset-reset: earliest
+      group-id: yrkesskade-skadeforklaring
+    client-id: yrkesskade-skadeforklaring
+
+mock:
+  enabled: true
+  port: 10099
+
+kafka:
+  topic:
+    skadeforklaring-innsendt: test
+
+no.nav.security.jwt:
+  issuer:
+    tokenx:
+      discoveryurl: http://metadata-selvbetjening
+      accepted_audience: aud-localhost
+  client:
+    registration:
+      pdl:
+        token-endpoint-url: http://localhost:${mock.port}/oauth2/v2.0/token
+        grant-type: urn:ietf:params:oauth:grant-type:token-exchange
+        authentication:
+          client-id: dummy-client-id
+          client-jwk: ./src/test/resources/jwks/jwk.json
+          client-auth-method: private_key_jwt
+        token-exchange:
+          audience: dev-fss:pdl:pdl-api

@@ -21,7 +21,19 @@ kafka:
   topic:
     skadeforklaring-innsendt: privat-yrkesskade-skademeldinginnsendt
 
-no.nav.security.jwt.issuer:
-  tokenx:
-    discoveryurl: https://fakedings.dev-gcp.nais.io/fake/.well-known/openid-configuration
-    accepted_audience: dev-gcp:yrkesskade:yrkesskade-skadeforklaring-api
+no.nav.security.jwt:
+  issuer:
+    tokenx:
+      discoveryurl: https://fakedings.dev-gcp.nais.io/fake/.well-known/openid-configuration
+      accepted_audience: dev-gcp:yrkesskade:yrkesskade-skadeforklaring-api
+  client:
+    registration:
+      pdl:
+        token-endpoint-url: https://fakedings.dev-gcp.nais.io/fake/tokenx
+        grant-type: urn:ietf:params:oauth:grant-type:token-exchange
+        authentication:
+          client-id: dummy-client-id
+          client-jwk: ./src/test/resources/jwks/jwk.json
+          client-auth-method: private_key_jwt
+        token-exchange:
+          audience: dev-fss:pdl:pdl-api

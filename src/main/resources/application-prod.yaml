@@ -21,6 +21,12 @@ spring:
 
 storage.type: GCP
 
+integration:
+  clients:
+    pdl:
+      url: https://pdl-api.prod-fss-pub.nais.io/graphql
+      client-id: prod-fss.pdl.pdl-api
+
 no.nav.security.jwt.issuer:
   tokenx:
     discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
