@@ -33,7 +33,7 @@ spec:
       - host: {{host}}
       {{#if ports}}
         ports:
-        {{ #each ports}}
+        {{#each ports}}
         - name: {{name}}
           port: {{port}}
           protocol: {{protocol}}
