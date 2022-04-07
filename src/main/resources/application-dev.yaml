@@ -26,3 +26,14 @@ no.nav.security.jwt:
     tokenx:
       discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
       accepted_audience: dev-gcp:yrkesskade:yrkesskade-skadeforklaring-api
+  client:
+    registration:
+      pdl:
+        token-endpoint-url: https://tokendings.dev-gcp.nais.io/token
+        grant-type: urn:ietf:params:oauth:grant-type:token-exchange
+        authentication:
+          client-id: ${TOKEN_X_CLIENT_ID}
+          client-jwk: ${TOKEN_X_PRIVATE_JWK}
+          client-auth-method: private_key_jwt
+        token-exchange:
+          audience: dev-fss:pdl:pdl-api
