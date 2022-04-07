@@ -28,20 +28,21 @@ spec:
     inbound:
       rules:
         - application: yrkesskade-skadeforklaring-skjema
+    external:
+    {{ #each externalHosts}}
+      - host: {{host } }
+      {{ #if ports}}
+        ports:
+        {{ #each ports}}
+        - name: {{name } }
+          port: {{port } }
+          protocol: {{protocol}}
+        {{/each}}
+      {{/if}}
+    {{/each}}
     outbound:
       external:
         - host: unleash.nais.io
-    { { #each externalHosts}}
-        - host: {{host } }
-        { { #if ports}}
-          ports:
-          { { #each ports}}
-          - name: {{name } }
-            port: {{port } }
-            protocol: {{protocol}}
-          {{/each}}
-        {{/if}}
-    {{/each}}
   tokenx:
     enabled: true
 
