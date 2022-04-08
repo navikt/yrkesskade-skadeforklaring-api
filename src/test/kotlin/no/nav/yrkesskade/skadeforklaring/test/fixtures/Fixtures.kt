@@ -4,7 +4,8 @@ import no.nav.yrkesskade.skadeforklaring.model.*
 import java.time.Instant
 
 fun getEnkelskadeforklaring() = Skadeforklaring(
-    identifikator = "12345678910",
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", rolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
     "En kort arbeidsbeskrivelse",
     "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = "Tidspunkt", periode = null),
@@ -15,7 +16,8 @@ fun getEnkelskadeforklaring() = Skadeforklaring(
 )
 
 fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
-    identifikator = "12345678910",
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", rolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
     "En kort arbeidsbeskrivelse",
     "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = "Tidspunkt", periode = null),

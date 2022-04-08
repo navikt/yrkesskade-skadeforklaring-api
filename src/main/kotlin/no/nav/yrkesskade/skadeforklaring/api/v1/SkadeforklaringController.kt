@@ -2,6 +2,7 @@ package no.nav.yrkesskade.skadeforklaring.api.v1
 
 import com.github.dockerjava.api.exception.BadRequestException
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -45,7 +46,7 @@ class SkadeforklaringController(
         ]
     )
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun postSkadeforklaring(@RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
+    fun postSkadeforklaring(@Parameter(description = "skadeforklaring som skal sendes inn") @RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
         if (skadeforklaring.behandler.adresse?.postnummer != null) {
             check(skadeforklaring.behandler.adresse.postnummer.toIntOrNull() != null,
                 { "Postnummer kan kun bestå av siffer" })

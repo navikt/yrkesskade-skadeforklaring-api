@@ -1,7 +1,8 @@
 package no.nav.yrkesskade.skadeforklaring.model
 
 data class Skadeforklaring(
-    val identifikator: String,
+    val innmelder: Innmelder,
+    val skadelidt: Skadelidt,
     val arbeidsbeskrivelse: String,
     val ulykkesbeskrivelse: String,
     val tid: Tid,
