@@ -19,7 +19,7 @@ class BrukerService(private val pdlClient: PdlClient) {
             identifikator = fodselsnummer,
             navn = person.navn,
             fodselsdato = person.foedselsdato,
-            juridiskAnsvarFor = person.foreldreansvar?.map {
+            foreldreansvar = person.foreldreansvar?.map {
                 Person(
                     identifikator = it.identifikator,
                     foedselsaar = it.foedselsaar,
