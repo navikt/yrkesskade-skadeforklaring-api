@@ -1,14 +1,15 @@
 package no.nav.yrkesskade.skadeforklaring.services
 
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.PdlClient
+import no.nav.yrkesskade.skadeforklaring.integration.pdl.IPdlClient
 import no.nav.yrkesskade.skadeforklaring.model.Brukerinfo
 import no.nav.yrkesskade.skadeforklaring.model.Person
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
 @Service
-class BrukerService(private val pdlClient: PdlClient) {
+class BrukerService constructor(@Qualifier("PdlClient") val pdlClient: IPdlClient) {
 
     fun hentBrukerinfo(fodselsnummer: String): Brukerinfo {
         val person = pdlClient.hentPersonMedForeldreansvar(fodselsnummer)

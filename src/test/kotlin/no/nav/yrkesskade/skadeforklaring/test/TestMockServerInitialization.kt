@@ -22,7 +22,7 @@ class TestMockServerInitialization : ApplicationContextInitializer<ConfigurableA
 
         TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
             configurableApplicationContext,
-            "mock.port=" + testMockServer.port()
+            "service.wiremock.port=" + testMockServer.port()
         )
     }
 }

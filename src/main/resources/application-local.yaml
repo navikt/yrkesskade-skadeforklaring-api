@@ -16,6 +16,9 @@ spring:
     producer:
       client-id: srvp01
 
+service:
+  mock: true
+
 # bruk oneshot for å opprette topic
 kafka:
   topic:
@@ -29,7 +32,7 @@ no.nav.security.jwt:
   client:
     registration:
       pdl:
-        token-endpoint-url: https://fakedings.dev-gcp.nais.io/fake/tokenx
+        token-endpoint-url: https://fakedings.dev-gcp.nais.io/tokenx/token
         grant-type: urn:ietf:params:oauth:grant-type:token-exchange
         authentication:
           client-id: dummy-client-id

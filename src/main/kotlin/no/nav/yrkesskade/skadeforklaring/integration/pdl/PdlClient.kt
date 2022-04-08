@@ -13,15 +13,19 @@ import no.nav.yrkesskade.skadeforklaring.security.TokenService
 import no.nav.yrkesskade.skadeforklaring.utils.getLogger
 import no.nav.yrkesskade.skadeforklaring.utils.getSecureLogger
 import org.slf4j.MDC
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 
 @Component
+@Qualifier("PdlClient")
+@ConditionalOnProperty(name = ["service.mock"], havingValue = "false", matchIfMissing = true)
 class PdlClient(
     @Value("\${integration.clients.pdl.url}") private val pdlGraphqlUrl: String,
     private val tokenService: TokenService
-) {
+): IPdlClient {
     companion object {
         @Suppress("JAVA_CLASS_ON_COMPANION")
         private val logger = getLogger(javaClass.enclosingClass)
@@ -34,7 +38,7 @@ class PdlClient(
     /**
      * Henter person med relasjon til personer som denne personen har foreldreansvar for.
      */
-    fun hentPersonMedForeldreansvar(fodselsnummer: String): Person? {
+    override fun hentPersonMedForeldreansvar(fodselsnummer: String): Person? {
         val token = tokenService.getAppAccessTokenWithScope(tokenClientName)
         val hentPersonMedForeldreansvarQuery =
             HentPersonMedForeldreansvar(HentPersonMedForeldreansvar.Variables(fodselsnummer))

@@ -11,9 +11,10 @@ spring:
       group-id: yrkesskade-skadeforklaring
     client-id: yrkesskade-skadeforklaring
 
-mock:
-  enabled: true
-  port: 10099
+service:
+  wiremock:
+    enabled: true
+    port: 10099
 
 kafka:
   topic:

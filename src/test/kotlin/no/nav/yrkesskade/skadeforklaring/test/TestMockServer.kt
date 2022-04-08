@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets
 
 @Component
 @ConditionalOnProperty(
-    value = arrayOf("mock.enabled"),
+    value = arrayOf("service.wiremock.enabled"),
     havingValue = "true",
     matchIfMissing = false
 )
