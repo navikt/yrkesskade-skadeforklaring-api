@@ -4,14 +4,18 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Instant
 import javax.validation.constraints.NotBlank
 
+enum class Tidstype {
+     TIDSPUNKT,
+     PERIODE
+}
+
 @Schema(
     name = "Tid",
     description = "Tid for ulykken. Kan være et tidspunkt eller over en periode"
 )
 data class Tid(
     @NotBlank
-    @Schema(type = "string", allowableValues = ["Tidspunkt", "Periode"])
-    val tidstype: String,
+    val tidstype: Tidstype,
 
     val tidspunkt: Instant?,
     val periode: Periode?
