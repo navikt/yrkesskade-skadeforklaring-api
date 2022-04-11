@@ -22,10 +22,12 @@ spring:
 storage.type: GCP
 
 integration:
-  clients:
+  client:
     pdl:
       url: https://pdl-api.prod-fss-pub.nais.io/graphql
       client-id: prod-fss.pdl.pdl-api
+    kodeverk:
+      url: https://yrkesskade-kodeverk.intern.nav.no
 
 no.nav.security.jwt.issuer:
   tokenx:

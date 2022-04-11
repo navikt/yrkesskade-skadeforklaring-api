@@ -16,10 +16,12 @@ kafka:
     skadeforklaring-innsendt: yrkesskade.privat-yrkesskade-skadeforklaringinnsendt
 
 integration:
-  clients:
+  client:
     pdl:
       url: https://pdl-api.dev-fss-pub.nais.io/graphql
       client-id: dev-fss.pdl.pdl-api
+    kodeverk:
+      url: https://yrkesskade-kodeverk.dev.intern.nav.no
 
 management:
   endpoint:

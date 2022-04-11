@@ -11,7 +11,19 @@ fun getEnkelskadeforklaring() = Skadeforklaring(
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
     vedleggtype = "Papir",
     vedleggreferanser = emptyList(),
-    fravaer = Fravaer(harFravaer = true, fravaertype = "Sykemelding"),
+    fravaer = Fravaer(harFravaer = true, fravaertype = "sykemelding"),
+    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = true, adresse = null)
+)
+
+fun getEnkelskadeforklaringUgyldigFravaertype() = Skadeforklaring(
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", rolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    "En kort arbeidsbeskrivelse",
+    "En litt lengre ulykkesbeskrivelse",
+    tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
+    vedleggtype = "Papir",
+    vedleggreferanser = emptyList(),
+    fravaer = Fravaer(harFravaer = true, fravaertype = "denne finnes ikke"),
     behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = true, adresse = null)
 )
 

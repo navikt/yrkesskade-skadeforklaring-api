@@ -6,6 +6,7 @@ import kotlinx.coroutines.runBlocking
 import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenService
 import no.nav.security.token.support.client.spring.ClientConfigurationProperties
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
+import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersonMedForeldreansvar
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersoner
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.model.Person
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Component
 @Qualifier("PdlClient")
 @ConditionalOnProperty(name = ["service.mock"], havingValue = "false", matchIfMissing = true)
 class PdlClient(
-    @Value("\${integration.clients.pdl.url}") private val pdlGraphqlUrl: String,
+    @Value("\${integration.client.pdl.url}") private val pdlGraphqlUrl: String,
     private val tokenService: TokenService
 ): IPdlClient {
     companion object {
@@ -53,7 +54,7 @@ class PdlClient(
                         it.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
                         it.add("Tema", "YRK")
                         it.add(
-                            "Nav-Call-Id", MDC.get(
+                            CORRELATION_ID_HEADER_NAME, MDC.get(
                                 CorrelationInterceptor.CORRELATION_ID_LOG_VAR_NAME
                             )
                         )
@@ -114,7 +115,7 @@ class PdlClient(
                     it.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
                     it.add("Tema", "YRK")
                     it.add(
-                        "Nav-Call-Id", MDC.get(
+                        CORRELATION_ID_HEADER_NAME, MDC.get(
                             CorrelationInterceptor.CORRELATION_ID_LOG_VAR_NAME
                         )
                     )

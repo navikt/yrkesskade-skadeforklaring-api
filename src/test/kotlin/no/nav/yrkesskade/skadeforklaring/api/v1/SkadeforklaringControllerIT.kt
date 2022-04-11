@@ -13,6 +13,7 @@ import no.nav.yrkesskade.skadeforklaring.services.BrukerService
 import no.nav.yrkesskade.skadeforklaring.test.AbstractTest
 import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaring
 import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaringMedFeilPostnummer
+import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaringUgyldigFravaertype
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,13 +50,23 @@ class SkadeforklaringControllerIT : AbstractTest() {
     }
 
     @Test
+    fun `send skadeforklaring med ugyldig fravaertype - autentisert`() {
+        val skadeforklaring = getEnkelskadeforklaringUgyldigFravaertype()
+
+        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+
+        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+    }
+
+    @Test
     fun `send skadeforklaring med bokstav i postnummer - autentisert`() {
         val skadeforklaring = getEnkelskadeforklaringMedFeilPostnummer()
 
         val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
         val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is5xxServerError)
+        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
     }
 
     private fun postSkadeforklaring(skadeforklaring: String, token: String) =

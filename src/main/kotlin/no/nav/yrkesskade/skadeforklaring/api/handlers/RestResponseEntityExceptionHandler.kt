@@ -18,6 +18,31 @@ import java.time.Instant
 @RestControllerAdvice
 class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
 
+    @ExceptionHandler(IllegalStateException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "400",
+                description = "Bad request",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ErrorResponse::class)
+                )]
+            ),
+        ]
+    )
+    fun handleIllegalStateException(
+        ex: Exception, request: WebRequest
+    ): ResponseEntity<Any?>? {
+        val body = ErrorResponse(
+            melding = ex.message!!,
+            statuskode = HttpStatus.BAD_REQUEST.value(),
+            tidspunkt = Instant.now()
+        )
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body)
+    }
+
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ApiResponses(
