@@ -13,7 +13,7 @@ import org.springframework.test.context.support.TestPropertySourceUtils
 
 @ActiveProfiles("integration")
 @SpringBootTest
-@ContextConfiguration(initializers = [AbstractTest.DockerConfigInitializer::class])
+@ContextConfiguration(initializers = [AbstractTest.DockerConfigInitializer::class, TestMockServerInitialization::class])
 @DirtiesContext
 abstract class AbstractTest {
 

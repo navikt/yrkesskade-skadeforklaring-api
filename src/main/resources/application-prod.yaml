@@ -21,6 +21,9 @@ spring:
 
 storage.type: GCP
 
+virusscan:
+  url: http://clamav.clamav/scan
+
 integration:
   client:
     pdl:

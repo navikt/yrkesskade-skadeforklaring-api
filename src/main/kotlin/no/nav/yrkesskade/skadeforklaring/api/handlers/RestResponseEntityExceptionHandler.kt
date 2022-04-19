@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import no.nav.yrkesskade.skadeforklaring.vedlegg.AttachmentVirusException
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -41,6 +42,31 @@ class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
             tidspunkt = Instant.now()
         )
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body)
+    }
+
+    @ExceptionHandler(AttachmentVirusException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "422",
+                description = "Virus oppdaget i vedlegg",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ErrorResponse::class)
+                )]
+            ),
+        ]
+    )
+    fun handleAttachmentVirusFound(
+        ex: Exception, request: WebRequest
+    ): ResponseEntity<Any?>? {
+        val body = ErrorResponse(
+            melding = ex.message!!,
+            statuskode = HttpStatus.UNPROCESSABLE_ENTITY.value(),
+            tidspunkt = Instant.now()
+        )
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body)
     }
 
     @ExceptionHandler(Exception::class)

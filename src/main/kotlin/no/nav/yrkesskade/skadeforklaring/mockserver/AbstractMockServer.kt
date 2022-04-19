@@ -6,10 +6,14 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer
 import com.github.tomakehurst.wiremock.matching.UrlPattern
+import no.nav.yrkesskade.skadeforklaring.utils.getLogger
+import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
+import java.lang.invoke.MethodHandles
+import java.nio.charset.StandardCharsets
 import java.time.Instant
 
 fun WireMockServer.stubForGet(urlPattern: UrlPattern, builder: MappingBuilder.() -> Unit) {
@@ -29,14 +33,16 @@ fun MappingBuilder.willReturnJson(body: String) {
     )
 }
 
+const val KODEVERK_FRAVAERTYPE = "/api/v1/kodeverk/typer/fravaertype/kodeverdier"
+
 @Component
 @ConditionalOnProperty(
-    value = arrayOf("mock.enabled"),
+    value = arrayOf("service.wiremock.enabled"),
     havingValue = "true",
     matchIfMissing = false
 )
 @Profile("local")
-class MockServer(@Value("\${mock.port}") private val port: Int) : AbstractMockSever(port) {
+class MockServer(@Value("\${service.wiremock.port}") private val port: Int) : AbstractMockSever(port) {
 
     init {
         start()
@@ -44,9 +50,9 @@ class MockServer(@Value("\${mock.port}") private val port: Int) : AbstractMockSe
 
 }
 
-
-
 open class AbstractMockSever(private val port: Int?) {
+
+    private val log = getLogger(MethodHandles.lookup().lookupClass())
 
     private val TOKEN_RESPONSE_TEMPLATE = """{
             "token_type": "Bearer",
@@ -93,6 +99,7 @@ open class AbstractMockSever(private val port: Int?) {
     private fun WireMockServer.setup() {
 
         // Oauth2 token
+        log.info("Wiremock stub /oauth2/v2.0/token")
         stubForAny(urlPathMatching("/oauth2/v2.0/token")) {
             val response = String.format(
                 TOKEN_RESPONSE_TEMPLATE,
@@ -102,9 +109,19 @@ open class AbstractMockSever(private val port: Int?) {
                 30,
                 "somerandomtoken"
             )
-            System.out.println(response)
             willReturnJson(response)
+        }
+
+        log.info("Wiremock stub ${KODEVERK_FRAVAERTYPE} til -> mock/kodeverk/fravaertyper.json")
+        stubForGet(urlPathMatching("$KODEVERK_FRAVAERTYPE.*")) {
+            willReturnJson(hentStringFraFil("kodeverk/fravaertyper.json"))
         }
     }
 
+    private fun hentStringFraFil(filnavn: String): String {
+        return IOUtils.toString(
+            AbstractMockSever::class.java.classLoader.getResourceAsStream("mock/$filnavn"),
+            StandardCharsets.UTF_8
+        )
+    }
 }

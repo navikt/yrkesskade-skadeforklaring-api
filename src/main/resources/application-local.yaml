@@ -24,6 +24,9 @@ kafka:
   topic:
     skadeforklaring-innsendt: privat-yrkesskade-skademeldinginnsendt
 
+virusscan:
+  enabled: false
+
 no.nav.security.jwt:
   issuer:
     tokenx:
