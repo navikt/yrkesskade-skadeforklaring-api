@@ -15,6 +15,9 @@ kafka:
   topic:
     skadeforklaring-innsendt: yrkesskade.privat-yrkesskade-skadeforklaringinnsendt
 
+virusscan:
+  enabled: true
+
 integration:
   client:
     pdl:

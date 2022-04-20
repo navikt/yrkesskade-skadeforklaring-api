@@ -16,6 +16,17 @@ service:
     enabled: true
     port: 10099
 
+virusscan:
+  enabled: false
+
+integration:
+  client:
+    pdl:
+      url: http://localhost:${service.wiremock.port}/graphql
+      client-id: dev-fss.pdl.pdl-api
+    kodeverk:
+      url: http://localhost:${service.wiremock.port}
+
 kafka:
   topic:
     skadeforklaring-innsendt: test

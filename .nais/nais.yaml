@@ -41,6 +41,9 @@ spec:
       {{/if}}
     {{/each}}
     outbound:
+      rules:
+        - application: clamav
+          namespace: clamav
       external:
         - host: unleash.nais.io
   tokenx:
