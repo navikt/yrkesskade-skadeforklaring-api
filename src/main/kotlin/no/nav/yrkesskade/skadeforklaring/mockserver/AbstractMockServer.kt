@@ -42,7 +42,7 @@ const val KODEVERK_FRAVAERTYPE = "/api/v1/kodeverk/typer/fravaertype/kodeverdier
     matchIfMissing = false
 )
 @Profile("local")
-class MockServer(@Value("\${service.wiremock.port}") private val port: Int) : AbstractMockSever(port) {
+class MockServer(@Value("\${service.wiremock.port}") private val port: Int) : AbstractMockServer(port) {
 
     init {
         start()
@@ -50,7 +50,7 @@ class MockServer(@Value("\${service.wiremock.port}") private val port: Int) : Ab
 
 }
 
-open class AbstractMockSever(private val port: Int?) {
+open class AbstractMockServer(private val port: Int?) {
 
     private val log = getLogger(MethodHandles.lookup().lookupClass())
 
@@ -120,7 +120,7 @@ open class AbstractMockSever(private val port: Int?) {
 
     private fun hentStringFraFil(filnavn: String): String {
         return IOUtils.toString(
-            AbstractMockSever::class.java.classLoader.getResourceAsStream("mock/$filnavn"),
+            AbstractMockServer::class.java.classLoader.getResourceAsStream("mock/$filnavn"),
             StandardCharsets.UTF_8
         )
     }

@@ -24,7 +24,7 @@ class VirusScannerClient(val virusScannerConfig: VirusScannerConfig) {
 
     init {
         client = WebClient.builder()
-            .baseUrl(virusScannerConfig.toString())
+            .baseUrl(virusScannerConfig.url)
             .clientConnector(ReactorClientHttpConnector(HttpClient.newConnection()))
             .build()
     }
@@ -42,7 +42,7 @@ class VirusScannerClient(val virusScannerConfig: VirusScannerConfig) {
             return
         }
 
-        val scanResults = client.put().uri("").body(Mono.just(data), ByteArray::class.java).retrieve().bodyToMono<Array<ScanResult>>().block().orEmpty()
+        val scanResults = client.put().body(Mono.just(data), ByteArray::class.java).retrieve().bodyToMono<Array<ScanResult>>().block().orEmpty()
 
         if (scanResults.size !== 1) {
             logger.warn("Uventet respons med lengde {}, forventet lengde er 1", scanResults.size)

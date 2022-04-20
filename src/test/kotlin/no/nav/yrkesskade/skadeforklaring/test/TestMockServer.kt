@@ -1,9 +1,8 @@
 package no.nav.yrkesskade.skadeforklaring.test
 
-import no.nav.yrkesskade.kodeverk.mockserver.AbstractMockSever
+import no.nav.yrkesskade.kodeverk.mockserver.AbstractMockServer
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
-import java.nio.charset.StandardCharsets
 
 @Component
 @ConditionalOnProperty(
@@ -11,4 +10,4 @@ import java.nio.charset.StandardCharsets
     havingValue = "true",
     matchIfMissing = false
 )
-class TestMockServer() : AbstractMockSever(null)
+class TestMockServer() : AbstractMockServer(null)
