@@ -34,6 +34,7 @@ fun MappingBuilder.willReturnJson(body: String) {
 }
 
 const val KODEVERK_FRAVAERTYPE = "/api/v1/kodeverk/typer/fravaertype/kodeverdier"
+const val KODEVERK_FOERTETILFRAVAER = "/api/v1/kodeverk/typer/foerteDinSkadeEllerSykdomTilFravaer/kodeverdier"
 
 @Component
 @ConditionalOnProperty(
@@ -112,9 +113,13 @@ open class AbstractMockServer(private val port: Int?) {
             willReturnJson(response)
         }
 
-        log.info("Wiremock stub ${KODEVERK_FRAVAERTYPE} til -> mock/kodeverk/fravaertyper.json")
+        log.info("Wiremock stub ${KODEVERK_FRAVAERTYPE} til -> mock/kodeverk/fravaertype.json")
         stubForGet(urlPathMatching("$KODEVERK_FRAVAERTYPE.*")) {
-            willReturnJson(hentStringFraFil("kodeverk/fravaertyper.json"))
+            willReturnJson(hentStringFraFil("kodeverk/fravaertype.json"))
+        }
+
+        stubForGet(urlPathMatching("$KODEVERK_FOERTETILFRAVAER.*")) {
+            willReturnJson(hentStringFraFil("kodeverk/foerteDinSkadeEllerSykdomTilFravaer.json"))
         }
     }
 
