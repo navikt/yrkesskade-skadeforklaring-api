@@ -48,21 +48,25 @@ class SkadeforklaringController(
     )
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun postSkadeforklaring(@Parameter(description = "skadeforklaring som skal sendes inn") @RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
+        if (skadeforklaring.behandler.erBehandlerOppsokt != null) {
+            check(skadeforklaring.behandler.erBehandlerOppsokt !== "nei" && skadeforklaring.behandler.erBehandlerOppsokt !== "ja", { "${skadeforklaring.behandler.erBehandlerOppsokt} er ikke en gyldig verdi. Kan være 'ja' eller 'nei'" })
+        }
+
         if (skadeforklaring.behandler.adresse?.postnummer != null) {
             check(skadeforklaring.behandler.adresse.postnummer.toIntOrNull() != null,
                 { "Postnummer kan kun bestå av siffer" })
         }
 
-        if (skadeforklaring.fravaer != null) {
+        kodeverkValidator.sjekkGyldigKodeverkverdi(
+            skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer,
+            "foerteDinSkadeEllerSykdomTilFravaer",
+            "'${skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer}' er ikke en gyldig verdi. Sjekk kodeverktjenesten 'foerteDinSkadeEllerSykdomTilFravaer' for gyldige verdier"
+        )
+        if (skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer !== "nei") {
             kodeverkValidator.sjekkGyldigKodeverkverdi(
-                skadeforklaring.fravaer.fravaertype,
+                skadeforklaring.fravaer.fravaertype!!,
                 "fravaertype",
                 "'${skadeforklaring.fravaer.fravaertype}' er ikke en gyldig fravaertype. Sjekk kodeverktjenesten 'fravaertype' for gyldige verdier"
-            )
-            kodeverkValidator.sjekkGyldigKodeverkverdi(
-                skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer,
-                "foerteDinSkadeEllerSykdomTilFravaer",
-                "'${skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer}' er ikke en gyldig verdi. Sjekk kodeverktjenesten 'foerteDinSkadeEllerSykdomTilFravaer' for gyldige verdier"
             )
         }
 

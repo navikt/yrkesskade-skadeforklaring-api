@@ -13,7 +13,7 @@ fun getEnkelskadeforklaring() = Skadeforklaring(
     vedleggtype = "Papir",
     vedleggreferanser = emptyList(),
     fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "sykemelding"),
-    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = true, adresse = null)
+    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = "nei", adresse = null)
 )
 
 fun getEnkelskadeforklaringUgyldigFravaertype() = Skadeforklaring(
@@ -26,7 +26,7 @@ fun getEnkelskadeforklaringUgyldigFravaertype() = Skadeforklaring(
     vedleggtype = "Papir",
     vedleggreferanser = emptyList(),
     fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "denne finnes ikke"),
-    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = true, adresse = null)
+    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = "nei", adresse = null)
 )
 
 fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
@@ -39,5 +39,5 @@ fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
     vedleggtype = "Papir",
     vedleggreferanser = emptyList(),
     fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "Sykemelding"),
-    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = true, adresse = Adresse(adresse = "Ringveien 2", postnummer = "TEST", poststed = "Test"))
+    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = "ja", adresse = Adresse(adresse = "Ringveien 2", postnummer = "TEST", poststed = "Test"))
 )
