@@ -53,11 +53,16 @@ class SkadeforklaringController(
                 { "Postnummer kan kun bestå av siffer" })
         }
 
-        if (skadeforklaring.fravaer.harFravaer) {
+        if (skadeforklaring.fravaer != null) {
             kodeverkValidator.sjekkGyldigKodeverkverdi(
                 skadeforklaring.fravaer.fravaertype,
                 "fravaertype",
-                "'${skadeforklaring.fravaer.fravaertype}' er ikke en gyldig fravaertype. Sjekk kodeverktjenesten for gyldige verdier"
+                "'${skadeforklaring.fravaer.fravaertype}' er ikke en gyldig fravaertype. Sjekk kodeverktjenesten 'fravaertype' for gyldige verdier"
+            )
+            kodeverkValidator.sjekkGyldigKodeverkverdi(
+                skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer,
+                "foerteDinSkadeEllerSykdomTilFravaer",
+                "'${skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer}' er ikke en gyldig verdi. Sjekk kodeverktjenesten 'foerteDinSkadeEllerSykdomTilFravaer' for gyldige verdier"
             )
         }
 

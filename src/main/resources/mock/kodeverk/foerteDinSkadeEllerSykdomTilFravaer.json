@@ -1,0 +1,24 @@
+{
+  "kodeverdierMap": {
+    "nei": {
+      "kode": "nei",
+      "verdi": "Nei"
+    },
+    "treDagerEllerMindre": {
+      "kode": "treDagerEllerMindre",
+      "verdi": "Kjent fravær tre dager eller mindre"
+    },
+    "merEnnTreDager": {
+      "kode": "merEnnTreDager",
+      "verdi": "Kjent fravær mer enn tre dager"
+    },
+    "fravaersdagerUkjent": {
+      "kode": "fravaersdagerUkjent",
+      "verdi": "Fraværsdager ukjent"
+    },
+    "oenskerIkkeAaOppgi": {
+      "kode": "oenskerIkkeAaOppgi",
+      "verdi": "Ønsker ikke å oppgi"
+    }
+  }
+}
