@@ -1,6 +1,6 @@
 package no.nav.yrkesskade.skadeforklaring.test
 
-import no.nav.yrkesskade.kodeverk.mockserver.AbstractMockServer
+import no.nav.yrkesskade.skadeforklaring.mockserver.AbstractMockServer
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 

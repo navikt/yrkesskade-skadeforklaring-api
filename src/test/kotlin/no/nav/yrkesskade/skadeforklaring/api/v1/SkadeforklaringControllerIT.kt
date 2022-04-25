@@ -2,22 +2,13 @@ package no.nav.yrkesskade.skadeforklaring.api.v1
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit5.MockKExtension
-import no.nav.yrkesskade.skadeforklaring.model.Behandler
-import no.nav.yrkesskade.skadeforklaring.model.Fravaer
 import no.nav.yrkesskade.skadeforklaring.model.Skadeforklaring
-import no.nav.yrkesskade.skadeforklaring.model.Tid
-import no.nav.yrkesskade.skadeforklaring.security.TokenService
-import no.nav.yrkesskade.skadeforklaring.services.BrukerService
 import no.nav.yrkesskade.skadeforklaring.test.AbstractTest
 import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaring
 import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaringMedFeilPostnummer
 import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaringUgyldigFravaertype
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders
@@ -26,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.time.Instant
 
 private const val SKADEFORKLARING_PATH = "/v1/skadeforklaringer"
 

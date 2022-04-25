@@ -5,7 +5,7 @@ import java.time.Instant
 
 fun getEnkelskadeforklaring() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", rolle = "Foresatt"),
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = "Foresatt"),
     skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
@@ -13,12 +13,12 @@ fun getEnkelskadeforklaring() = Skadeforklaring(
     vedleggtype = "Papir",
     vedleggreferanser = emptyList(),
     fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "sykemelding"),
-    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = "nei", adresse = null)
+    helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "nei", adresse = null)
 )
 
 fun getEnkelskadeforklaringUgyldigFravaertype() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", rolle = null),
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
     skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
@@ -26,12 +26,12 @@ fun getEnkelskadeforklaringUgyldigFravaertype() = Skadeforklaring(
     vedleggtype = "Papir",
     vedleggreferanser = emptyList(),
     fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "denne finnes ikke"),
-    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = "nei", adresse = null)
+    helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "nei", adresse = null)
 )
 
 fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", rolle = null),
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
     skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
@@ -39,5 +39,5 @@ fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
     vedleggtype = "Papir",
     vedleggreferanser = emptyList(),
     fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "Sykemelding"),
-    behandler = Behandler(behandlerNavn = "Test Testesen", erBehandlerOppsokt = "ja", adresse = Adresse(adresse = "Ringveien 2", postnummer = "TEST", poststed = "Test"))
+    helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "ja", adresse = Adresse(adresse = "Ringveien 2", postnummer = "TEST", poststed = "Test"))
 )

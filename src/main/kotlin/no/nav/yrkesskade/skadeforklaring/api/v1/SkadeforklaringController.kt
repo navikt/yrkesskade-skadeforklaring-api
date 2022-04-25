@@ -48,12 +48,12 @@ class SkadeforklaringController(
     )
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun postSkadeforklaring(@Parameter(description = "skadeforklaring som skal sendes inn") @RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
-        if (skadeforklaring.behandler.erBehandlerOppsokt != null) {
-            check(skadeforklaring.behandler.erBehandlerOppsokt !== "nei" && skadeforklaring.behandler.erBehandlerOppsokt !== "ja", { "${skadeforklaring.behandler.erBehandlerOppsokt} er ikke en gyldig verdi. Kan være 'ja' eller 'nei'" })
+        if (skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt != null) {
+            check(skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt !== "nei" && skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt !== "ja", { "${skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt} er ikke en gyldig verdi. Kan være 'ja' eller 'nei'" })
         }
 
-        if (skadeforklaring.behandler.adresse?.postnummer != null) {
-            check(skadeforklaring.behandler.adresse.postnummer.toIntOrNull() != null,
+        if (skadeforklaring.helseinstitusjon.adresse?.postnummer != null) {
+            check(skadeforklaring.helseinstitusjon.adresse.postnummer.toIntOrNull() != null,
                 { "Postnummer kan kun bestå av siffer" })
         }
 

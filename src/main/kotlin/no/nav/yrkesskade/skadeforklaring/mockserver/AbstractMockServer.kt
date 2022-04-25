@@ -1,4 +1,4 @@
-package no.nav.yrkesskade.kodeverk.mockserver
+package no.nav.yrkesskade.skadeforklaring.mockserver
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder

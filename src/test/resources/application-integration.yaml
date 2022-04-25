@@ -39,7 +39,7 @@ no.nav.security.jwt:
   client:
     registration:
       pdl:
-        token-endpoint-url: http://localhost:${mock.port}/oauth2/v2.0/token
+        token-endpoint-url: http://localhost:${service.wiremock.port}/oauth2/v2.0/token
         grant-type: urn:ietf:params:oauth:grant-type:token-exchange
         authentication:
           client-id: dummy-client-id
