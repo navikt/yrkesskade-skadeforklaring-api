@@ -1,0 +1,282 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "https://yrkesskade-kodeverk.intern.nav.no",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Kodeverk API",
+      "description": "Kodeverk API"
+    }
+  ],
+  "paths": {
+    "/api/v1/kodeverk/typer": {
+      "get": {
+        "tags": [
+          "Kodeverk API"
+        ],
+        "summary": "Hent liste over tilgjengelige typer",
+        "operationId": "hentKodeverktyper",
+        "responses": {
+          "404": {
+            "description": "Kunne ikke finne ressurs"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "Kodeverktyper hentet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KodetypeResponsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/kodeverk/typer/{typenavn}/kodeverdier": {
+      "get": {
+        "tags": [
+          "Kodeverk API"
+        ],
+        "summary": "Hent liste over kodeverdier for en type",
+        "operationId": "hentKodeverdierForType",
+        "parameters": [
+          {
+            "name": "typenavn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Kunne ikke finne ressurs"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "Kodeverkverdier hentet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KodeverdiResponsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/kodeverk/typer/{typenavn}/kategorier": {
+      "get": {
+        "tags": [
+          "Kodeverk API"
+        ],
+        "summary": "Hent liste over tilgjengelige kategorier for en type",
+        "operationId": "hentKodeverkkategorier",
+        "parameters": [
+          {
+            "name": "typenavn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Kunne ikke finne ressurs"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "Kodeverkkategorier hentet for kodetype",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KodekategoriResponsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/kodeverk/typer/{typenavn}/kategorier/{kategorinavn}/kodeverdierliste": {
+      "get": {
+        "tags": [
+          "Kodeverk API"
+        ],
+        "summary": "Hent liste over kodeverdier for en type og kategori",
+        "operationId": "hentListeMedKodeverdierForTypeOgKategori",
+        "parameters": [
+          {
+            "name": "typenavn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kategorinavn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Kunne ikke finne ressurs"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "Kodeverkverdier hentet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KodeverdiResponsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/kodeverk/typer/{typenavn}/kategorier/{kategorinavn}/kodeverdier": {
+      "get": {
+        "tags": [
+          "Kodeverk API"
+        ],
+        "summary": "Hent samling kodeverdier for en type og kategori",
+        "operationId": "hentMapMedKodeverdierForTypeOgKategori",
+        "parameters": [
+          {
+            "name": "typenavn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kategorinavn",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Kunne ikke finne ressurs"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "200": {
+            "description": "Kodeverkverdier hentet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KodeverdiResponsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "KodetypeDto": {
+        "type": "object",
+        "properties": {
+          "navn": {
+            "type": "string"
+          },
+          "beskrivelse": {
+            "type": "string"
+          }
+        }
+      },
+      "KodetypeResponsDto": {
+        "type": "object",
+        "properties": {
+          "typer": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KodetypeDto"
+            }
+          }
+        }
+      },
+      "KodeverdiDto": {
+        "type": "object",
+        "properties": {
+          "kode": {
+            "type": "string"
+          },
+          "verdi": {
+            "type": "string"
+          }
+        }
+      },
+      "KodeverdiResponsDto": {
+        "type": "object",
+        "properties": {
+          "kodeverdierMap": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/KodeverdiDto"
+            }
+          }
+        }
+      },
+      "KodekategoriDto": {
+        "type": "object",
+        "properties": {
+          "navn": {
+            "type": "string"
+          },
+          "beskrivelse": {
+            "type": "string"
+          }
+        }
+      },
+      "KodekategoriResponsDto": {
+        "type": "object",
+        "properties": {
+          "kategorier": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KodekategoriDto"
+            }
+          }
+        }
+      }
+    }
+  }
+}
