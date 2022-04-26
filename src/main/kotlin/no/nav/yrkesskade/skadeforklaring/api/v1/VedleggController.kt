@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import no.nav.yrkesskade.skadeforklaring.api.handlers.ErrorResponse
+import no.nav.yrkesskade.skadeforklaring.model.Vedlegg
 import no.nav.yrkesskade.skadeforklaring.security.AutentisertBruker
 import no.nav.yrkesskade.skadeforklaring.security.ISSUER
 import no.nav.yrkesskade.skadeforklaring.security.LEVEL
@@ -49,6 +50,30 @@ class VedleggController(val autentisertBruker: AutentisertBruker, val storageSer
             autentisertBruker.fodselsnummer
         )
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, url).build()
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Hent vedlegg")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200", description = "Vedlegg hentet",
+                content = [Content()]
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Internal Server Error",
+                content = [Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = ErrorResponse::class)
+                )]
+            ),
+        ]
+    )
+    fun hentVedlegg(@PathVariable("id") id: String): ResponseEntity<Vedlegg?> {
+        val blob = storageService.hent(id, autentisertBruker.fodselsnummer) ?: return ResponseEntity.notFound().build()
+        val vedlegg = Vedlegg(blob.bytes ?: byteArrayOf(), blob.navn ?: "")
+        return ResponseEntity.ok(vedlegg)
     }
 
     @DeleteMapping("/{id}")

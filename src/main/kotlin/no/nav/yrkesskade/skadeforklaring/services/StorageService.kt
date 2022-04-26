@@ -32,6 +32,17 @@ class StorageService(@Value("\${storage.type:MEMORY}") val storageType: String, 
         )
     }
 
+    fun hent(id: String, brukerIdentifikator: String): Blob? =
+        storage.getBlob(
+            Blob(
+                id = id,
+                bruker = brukerIdentifikator,
+                null,
+                null,
+                null
+            )
+        )
+
     fun slett(id: String, brukerIdentifikator: String): Boolean =
         storage.deleteBlob(
             Blob(
