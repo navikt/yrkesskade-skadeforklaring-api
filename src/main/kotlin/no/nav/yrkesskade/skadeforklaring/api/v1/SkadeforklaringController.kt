@@ -49,8 +49,10 @@ class SkadeforklaringController(
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun postSkadeforklaring(@Parameter(description = "skadeforklaring som skal sendes inn") @RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
         if (skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt != null) {
-            check(skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt !== "nei" && skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt !== "ja", { "${skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt} er ikke en gyldig verdi. Kan være 'ja' eller 'nei'" })
+            check(skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt != "nei" && skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt != "ja", { "${skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt} er ikke en gyldig verdi. Kan være 'ja' eller 'nei'" })
         }
+
+        check(skadeforklaring.skalEttersendeDokumentasjon != "ja" && skadeforklaring.skalEttersendeDokumentasjon != "nei", { "${skadeforklaring.skalEttersendeDokumentasjon} er ikke en gyldig verdi. Kan være 'ja' eller 'nei'"})
 
         if (skadeforklaring.helseinstitusjon.adresse?.postnummer != null) {
             check(skadeforklaring.helseinstitusjon.adresse.postnummer.toIntOrNull() != null,
