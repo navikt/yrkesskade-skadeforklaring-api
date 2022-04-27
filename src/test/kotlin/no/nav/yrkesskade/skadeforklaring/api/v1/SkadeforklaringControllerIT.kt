@@ -4,10 +4,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.yrkesskade.skadeforklaring.model.Skadeforklaring
 import no.nav.yrkesskade.skadeforklaring.test.AbstractTest
-import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaring
-import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaringIngenFravaer
-import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaringMedFeilPostnummer
-import no.nav.yrkesskade.skadeforklaring.test.fixtures.getEnkelskadeforklaringUgyldigFravaertype
+import no.nav.yrkesskade.skadeforklaring.test.fixtures.*
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -53,6 +50,16 @@ class SkadeforklaringControllerIT : AbstractTest() {
     @Test
     fun `send skadeforklaring uten fravaer - autentisert`() {
         val skadeforklaring = getEnkelskadeforklaringIngenFravaer()
+
+        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+
+        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+    }
+
+    @Test
+    fun `send skadeforklaring oensker ikke oppgi fravaer - autentisert`() {
+        val skadeforklaring = getEnkelskadeforklaringOenskerIkkeOppgiFravaer()
 
         val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
         val skadeforklaringString = skadeforklaringTilString(skadeforklaring);

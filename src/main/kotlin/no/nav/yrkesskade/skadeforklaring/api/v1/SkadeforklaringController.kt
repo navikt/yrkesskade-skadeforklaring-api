@@ -62,7 +62,7 @@ class SkadeforklaringController(
             "foerteDinSkadeEllerSykdomTilFravaer",
             "'${skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer}' er ikke en gyldig verdi. Sjekk kodeverktjenesten 'foerteDinSkadeEllerSykdomTilFravaer' for gyldige verdier"
         )
-        if (skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer != "nei") {
+        if (skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer != "nei" && skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer != "oenskerIkkeAaOppgi") {
             kodeverkValidator.sjekkGyldigKodeverkverdi(
                 skadeforklaring.fravaer.fravaertype!!,
                 "fravaertype",

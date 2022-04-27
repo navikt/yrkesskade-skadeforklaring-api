@@ -42,6 +42,19 @@ fun getEnkelskadeforklaringIngenFravaer() = Skadeforklaring(
     helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "nei", adresse = null)
 )
 
+fun getEnkelskadeforklaringOenskerIkkeOppgiFravaer() = Skadeforklaring(
+    saksnummer = null,
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
+    noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
+    tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
+    vedleggtype = "Papir",
+    vedleggreferanser = emptyList(),
+    fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "oenskerIkkeAaOppgi", fravaertype = ""),
+    helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "nei", adresse = null)
+)
+
 fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
     saksnummer = null,
     innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
