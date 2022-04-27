@@ -1,9 +1,9 @@
 package no.nav.yrkesskade.skadeforklaring.integration.kodeverk
 
+import no.nav.yrkesskade.kodeverk.model.KodeverdiDto
+import no.nav.yrkesskade.kodeverk.model.KodeverdiResponsDto
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
-import no.nav.yrkesskade.skadeforklaring.integration.kodeverk.model.KodeverdiDto
-import no.nav.yrkesskade.skadeforklaring.integration.kodeverk.model.KodeverdiResponsDto
 import org.checkerframework.checker.units.qual.K
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC

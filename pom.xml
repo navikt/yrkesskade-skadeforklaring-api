@@ -26,18 +26,6 @@
         <openapi-generator.version>5.3.0</openapi-generator.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>libraries-bom</artifactId>
-                <version>25.0.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <!-- spring -->
         <dependency>
@@ -57,6 +45,18 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+
+        <!-- yrkesskade moduler -->
+        <dependency>
+            <groupId>no.nav.yrkesskade</groupId>
+            <artifactId>kodeverk</artifactId>
+            <version>74d27c24_202204270904</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.yrkesskade</groupId>
+            <artifactId>storage</artifactId>
+            <version>74d27c24_202204270904</version>
         </dependency>
 
         <!-- jackson -->
@@ -88,12 +88,6 @@
             <groupId>no.nav.security</groupId>
             <artifactId>token-validation-core</artifactId>
             <version>${token-support.version}</version>
-        </dependency>
-
-        <!-- storage -->
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-storage</artifactId>
         </dependency>
 
         <!-- kafka -->
@@ -265,33 +259,6 @@
                                 <queryFile>${project.basedir}/src/main/resources/graphql/hentPersonMedForeldreansvar.graphql</queryFile>
                                 <queryFile>${project.basedir}/src/main/resources/graphql/hentPersoner.graphql</queryFile>
                             </queryFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>${openapi-generator.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>ekstern-openapi-kontrakt/kodeverk.json</inputSpec>
-                            <generatorName>kotlin-spring</generatorName>
-                            <modelPackage>no.nav.yrkesskade.skadeforklaring.integration.kodeverk.model</modelPackage>
-                            <apiPackage>no.nav.yrkesskade.skadeforklaring.integration.kodeverk.api</apiPackage>
-                            <invokerPackage>invokerPackage</invokerPackage>
-                            <generateApis>false</generateApis>
-                            <configOptions>
-                                <sourceFolder>target</sourceFolder>
-                                <interfaceOnly>true</interfaceOnly>
-                                <gradleBuildFile>false</gradleBuildFile>
-                                <delegatePattern>true</delegatePattern>
-                                <useTags>true</useTags>
-                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>

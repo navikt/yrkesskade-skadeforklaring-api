@@ -1,11 +1,12 @@
 package no.nav.yrkesskade.skadeforklaring.services
 
 import no.nav.yrkesskade.skadeforklaring.model.Vedlegg
-import no.nav.yrkesskade.skadeforklaring.storage.Blob
-import no.nav.yrkesskade.skadeforklaring.storage.StorageProvider
-import no.nav.yrkesskade.skadeforklaring.storage.StorageType
-import no.nav.yrkesskade.skadeforklaring.storage.Store
 import no.nav.yrkesskade.skadeforklaring.vedlegg.Virusskanner
+import no.nav.yrkesskade.storage.Blob
+import no.nav.yrkesskade.storage.StorageProvider
+import no.nav.yrkesskade.storage.StorageType
+import no.nav.yrkesskade.storage.Store
+
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
