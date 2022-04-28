@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
+import java.util.*
+
+const val SKOLE_ALDER = 5;
 
 @Service
 class BrukerService constructor(@Qualifier("PdlClient") val pdlClient: IPdlClient) {
@@ -20,7 +23,9 @@ class BrukerService constructor(@Qualifier("PdlClient") val pdlClient: IPdlClien
             identifikator = fodselsnummer,
             navn = person.navn,
             fodselsdato = person.foedselsdato,
-            foreldreansvar = person.foreldreansvar?.map {
+            foreldreansvar = person.foreldreansvar?.filter {
+                erSkoleAlder(it.foedselsaar)
+            }?.map {
                 Person(
                     identifikator = it.identifikator,
                     foedselsaar = it.foedselsaar,
@@ -29,5 +34,11 @@ class BrukerService constructor(@Qualifier("PdlClient") val pdlClient: IPdlClien
                 )
             }.orEmpty()
         )
+    }
+
+    private fun erSkoleAlder(fodselsaar: Int): Boolean {
+        val differanse = Calendar.getInstance().get(Calendar.YEAR) - fodselsaar
+
+        return differanse >= SKOLE_ALDER;
     }
 }
