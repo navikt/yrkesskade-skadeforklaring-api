@@ -77,6 +77,26 @@ class SkadeforklaringControllerIT : AbstractTest() {
         postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
     }
 
+    @Test
+    fun `send skadeforklaring med helsepersonell er oppsoekt - autentisert`() {
+        val skadeforklaring = getEnkelskadeforklaringMedHelsepersonellOppsoekt()
+
+        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+
+        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+    }
+
+    @Test
+    fun `send skadeforklaring med helsepersonell er oppsoekt uten adresse - autentisert`() {
+        val skadeforklaring = getEnkelskadeforklaringMedHelsepersonellOppsoektUtenAdresse()
+
+        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+
+        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+    }
+
     private fun postSkadeforklaring(skadeforklaring: String, token: String) =
         mvc.perform(
             MockMvcRequestBuilders.post(SKADEFORKLARING_PATH)
