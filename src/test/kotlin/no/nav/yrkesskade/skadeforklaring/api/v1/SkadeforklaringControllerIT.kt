@@ -58,7 +58,7 @@ class SkadeforklaringControllerIT : AbstractTest() {
     }
 
     @Test
-    fun `send skadeforklaring oensker ikke oppgi fravaer - autentisert`() {
+    fun `send skadeforklaring -fravaer ikke relevant - autentisert`() {
         val skadeforklaring = getEnkelskadeforklaringOenskerIkkeOppgiFravaer()
 
         val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString

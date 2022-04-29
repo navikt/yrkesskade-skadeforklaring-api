@@ -16,9 +16,9 @@
       "kode": "fravaersdagerUkjent",
       "verdi": "Fraværsdager ukjent"
     },
-    "oenskerIkkeAaOppgi": {
-      "kode": "oenskerIkkeAaOppgi",
-      "verdi": "Ønsker ikke å oppgi"
+    "ikkeRelevant": {
+      "kode": "ikkeRelevant",
+      "verdi": "Ikke relevant"
     }
   }
 }

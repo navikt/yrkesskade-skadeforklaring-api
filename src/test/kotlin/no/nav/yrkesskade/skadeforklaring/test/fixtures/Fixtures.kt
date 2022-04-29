@@ -77,7 +77,7 @@ fun getEnkelskadeforklaringOenskerIkkeOppgiFravaer() = Skadeforklaring(
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
     skalEttersendeDokumentasjon = "ja",
     vedleggreferanser = emptyList(),
-    fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "oenskerIkkeAaOppgi", fravaertype = ""),
+    fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "ikkeRelevant", fravaertype = ""),
     helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "nei", adresse = null)
 )
 
