@@ -86,7 +86,8 @@ class PdlClient(
                         navn = it.person?.navn?.first()?.forkortetNavn.orEmpty(),
                         foedselsaar = it.person?.foedsel?.first()?.foedselsaar!!,
                         foedselsdato = it.person?.foedsel?.first().foedselsdato.orEmpty(),
-                        null
+                        doedsdato = it.person?.doedsfall?.first().doedsdato,
+                        foreldreansvar = null
                     )
                 }!!
             }
@@ -96,7 +97,8 @@ class PdlClient(
                 navn = hentetPerson.navn.first().forkortetNavn.orEmpty(),
                 foedselsaar = hentetPerson.foedsel.first().foedselsaar!!,
                 foedselsdato = hentetPerson.foedsel.first().foedselsdato.orEmpty(),
-                foreldreansvar = subjekter
+                foreldreansvar = subjekter,
+                doedsdato = null
             )
         }
 

@@ -51,7 +51,8 @@ class BrukerinfoControllerIT : AbstractTest() {
             navn = "Ola Testesen",
             foedselsdato = "01-01-1970",
             foedselsaar = 1970,
-            foreldreansvar = listOf(Person("0123456789", "Hege Testesen", 2000, "01-01-2000", null))
+            doedsdato = null,
+            foreldreansvar = listOf(Person("0123456789", "Hege Testesen", 2000, "01-01-2000",null, null))
         )
 
         every { pdlClient.hentPersonMedForeldreansvar(any()) } returns person
@@ -78,7 +79,35 @@ class BrukerinfoControllerIT : AbstractTest() {
             navn = "Ola Testesen",
             foedselsdato = "01-01-1970",
             foedselsaar = 1970,
-            foreldreansvar = listOf(Person("0123456789", "Hege Testesen", fodselsaar, "01-01-$fodselsaar", null))
+            doedsdato = null,
+            foreldreansvar = listOf(Person("0123456789", "Hege Testesen", fodselsaar, "01-01-$fodselsaar", null, null))
+        )
+
+        every { pdlClient.hentPersonMedForeldreansvar(any()) } returns person
+
+        // Data for eksterne tjenester kommer fra localhost MockServer
+        mvc.perform(
+            MockMvcRequestBuilders.get(USER_INFO_PATH)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer $jwt")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(Charsets.UTF_8)
+        ).andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(jsonPath("$.identifikator").value("12345678910"))
+            .andExpect(jsonPath("$.foreldreansvar").isEmpty)
+    }
+
+    @Test
+    fun `hent brukerinfo, barn med registrert doedsdato - autentisert`() {
+        // gyldig JWT
+        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+
+        val person = Person(
+            identifikator = "12345678910",
+            navn = "Ola Testesen",
+            foedselsdato = "01-01-1970",
+            foedselsaar = 1970,
+            doedsdato = null,
+            foreldreansvar = listOf(Person("0123456789", "Unfortunate Testesen", 2005, "01-01-2005", "01-01-2022", null))
         )
 
         every { pdlClient.hentPersonMedForeldreansvar(any()) } returns person

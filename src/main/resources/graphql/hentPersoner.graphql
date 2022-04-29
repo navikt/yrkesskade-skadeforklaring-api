@@ -6,6 +6,9 @@ query($identer: [ID!]!) {
       navn {
         forkortetNavn
       },
+      doedsfall{
+        doedsdato
+      },
       foedsel{
         foedselsaar,
         foedselsdato

@@ -24,7 +24,7 @@ class BrukerService constructor(@Qualifier("PdlClient") val pdlClient: IPdlClien
             navn = person.navn,
             fodselsdato = person.foedselsdato,
             foreldreansvar = person.foreldreansvar?.filter {
-                erSkoleAlder(it.foedselsaar)
+                erSkoleAlder(it.foedselsaar) && it.doedsdato == null
             }?.map {
                 Person(
                     identifikator = it.identifikator,

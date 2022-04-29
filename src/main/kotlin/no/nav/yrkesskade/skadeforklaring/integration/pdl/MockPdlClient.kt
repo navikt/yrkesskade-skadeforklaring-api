@@ -22,6 +22,7 @@ class MockPdlClient() : IPdlClient {
         identifikator = fodselsnummer,
         navn = "Andre McMock",
         foedselsdato = "26-04-1986",
+        doedsdato = null,
         foedselsaar = 1986,
         foreldreansvar = hentBarn()
     )
@@ -32,21 +33,32 @@ class MockPdlClient() : IPdlClient {
             navn = "Nord McMock",
             foedselsdato = "01-01-2010",
             foedselsaar = 2010,
-            foreldreansvar = null
+            foreldreansvar = null,
+            doedsdato = null
         ),
         Person(
             identifikator = "23456789101",
             navn = "Vest McMock",
             foedselsaar = lagFoedselsdato(6).year,
             foedselsdato = lagFoedselsdato(6).format(formatter),
-            foreldreansvar = null
+            foreldreansvar = null,
+            doedsdato = null
         ),
         Person(
             identifikator = "23456789101",
             navn = "Baby McMock",
             foedselsaar = lagFoedselsdato(1).year,
             foedselsdato = lagFoedselsdato(1).format(formatter),
-            foreldreansvar = null
+            foreldreansvar = null,
+            doedsdato = null
+        ),
+        Person(
+            identifikator = "23456789102",
+            navn = "Unfortunate McMock",
+            foedselsaar = lagFoedselsdato(1).year,
+            foedselsdato = lagFoedselsdato(1).format(formatter),
+            foreldreansvar = null,
+            doedsdato = "01-01-2022"
         )
     )
 
