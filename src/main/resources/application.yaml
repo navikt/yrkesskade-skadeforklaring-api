@@ -10,6 +10,12 @@ spring:
       enabled: true
       file-size-threshold: 2KB
       max-file-size: 8MB
+  cloud:
+    gcp:
+      bigquery:
+        dataset-name: yrkesskade_metrikker
+        project-id: ${GCP_TEAM_PROJECT_ID}
+        enabled: true
 
 kafka:
   topic:

@@ -15,6 +15,10 @@ spring:
       schema.registry.url: ${KAFKA_SCHEMA_REGISTRY}
     producer:
       client-id: srvp01
+  cloud:
+    gcp:
+      bigquery:
+        enabled: false
 
 service:
   mock: true

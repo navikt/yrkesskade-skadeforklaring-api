@@ -5,6 +5,7 @@ import no.nav.yrkesskade.skadeforklaring.integration.mottak.SkadeforklaringInnse
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.model.SkadeforklaringInnsendingHendelse
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.model.SkadeforklaringMetadata
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.model.Spraak
+import no.nav.yrkesskade.skadeforklaring.metric.MetricService
 import no.nav.yrkesskade.skadeforklaring.model.Skadeforklaring
 import no.nav.yrkesskade.skadeforklaring.utils.getSecureLogger
 import org.slf4j.MDC
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
-class SkadeforklaringService(private val skadeforklaringInnsendingClient: SkadeforklaringInnsendingClient) {
+class SkadeforklaringService(
+    private val skadeforklaringInnsendingClient: SkadeforklaringInnsendingClient,
+    private val metricService: MetricService
+) {
 
     private val secureLog = getSecureLogger()
 
@@ -30,6 +34,7 @@ class SkadeforklaringService(private val skadeforklaringInnsendingClient: Skadef
         )
         return skadeforklaringInnsendingClient.sendMelding(skadeforklaringInnsendingHendelse).also {
             secureLog.info("Sendt skadeforklaring $it til mottak")
+            metricService.insertMetrikk(skadeforklaringInnsendingHendelse)
         }
     }
 }
