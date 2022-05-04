@@ -15,7 +15,7 @@ spring:
       bigquery:
         dataset-name: yrkesskade_metrikker
         project-id: ${GCP_TEAM_PROJECT_ID}
-        enabled: true
+        enabled: false
 
 kafka:
   topic:
