@@ -1,5 +1,6 @@
 package no.nav.yrkesskade.skadeforklaring.integration.bigquery.schema
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -31,14 +32,16 @@ internal class SchemaTest {
             )
         )
 
-        val content = skadeforklaring_v1.transform(objectMapper.valueToTree(payload)).content
+        val jsonNode = objectMapper.valueToTree<JsonNode>(payload)
+        val content = skadeforklaring_v1.transform(jsonNode).content
         assertThat(content["kilde"]).isEqualTo(payload.kilde)
         assertThat(content["tidspunktMottatt"]).isEqualTo(payload.tidspunktMottatt.toString())
         assertThat(content["spraak"]).isEqualTo(payload.spraak)
         assertThat(content["callId"]).isEqualTo(payload.callId)
         assertThat(content["innmelderrolle"]).isEqualTo(payload.innmelderrolle)
         assertThat(content["antallVedleggTotalt"]).isEqualTo(payload.antallVedleggTotalt)
-        assertThat(content["antallVedleggPerType"]).isEqualTo(payload.antallVedleggPerType)
+        val expectedAntallVedleggPerType = "[{vedleggtype=PDF, antall=2}, {vedleggtype=JPEG, antall=1}]"
+        assertThat(content["antallVedleggPerType"].toString()).isEqualTo(expectedAntallVedleggPerType)
     }
 
     @Test

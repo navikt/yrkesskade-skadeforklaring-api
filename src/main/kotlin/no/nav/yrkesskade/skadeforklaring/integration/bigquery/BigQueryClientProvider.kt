@@ -74,7 +74,7 @@ class DefaultBigQueryClient(private val datasetId: DatasetId) : BigQueryClient {
             "Mangler tabell: '${tableId.table}' i BigQuery"
         }
         val rows = listOf(row)
-        logger.debug("Setter inn rader i tabell: '${tableId.table}', rader: '$rows'")
+         logger.info("Setter inn rader i tabell: '${tableId.table}', rader: '$rows'")
         val response = table.insert(rows)
         if (response.hasErrors()) {
             throw BigQueryClient.BigQueryClientException(

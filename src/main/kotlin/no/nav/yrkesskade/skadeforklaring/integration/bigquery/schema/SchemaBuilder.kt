@@ -62,6 +62,11 @@ class SchemaBuilder {
         block: FieldBuilder.() -> Unit = {},
     ): Field = field(name, StandardSQLTypeName.STRING, block)
 
+    fun int(
+        name: String,
+        block: FieldBuilder.() -> Unit = {},
+    ): Field = field(name, StandardSQLTypeName.INT64, block)
+
     fun numeric(
         name: String,
         block: FieldBuilder.() -> Unit = {},
