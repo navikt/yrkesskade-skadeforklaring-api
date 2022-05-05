@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.treeToValue
 import com.google.cloud.bigquery.InsertAllRequest
 import com.google.cloud.bigquery.Schema
 import no.nav.yrkesskade.skadeforklaring.metric.SkadeforklaringMetrikkPayload
+import no.nav.yrkesskade.skadeforklaring.vedlegg.VedleggHelper.asMap
 
 val skadeforklaring_v1 = object : SchemaDefinition {
 
@@ -34,7 +35,7 @@ val skadeforklaring_v1 = object : SchemaDefinition {
             required()
             description("Innmelders rolle")
         }
-        numeric("antallVedleggTotalt") {
+        int("antallVedleggTotalt") {
             required()
             description("Totalt antall vedlegg sendt inn sammen med skadeforklaringen")
         }
@@ -45,7 +46,7 @@ val skadeforklaring_v1 = object : SchemaDefinition {
                 string("vedleggtype") {
                     required()
                 }
-                numeric("antall") {
+                int("antall") {
                     required()
                 }
             }
@@ -53,6 +54,7 @@ val skadeforklaring_v1 = object : SchemaDefinition {
     }
 
     override fun transform(payload: JsonNode): InsertAllRequest.RowToInsert {
+        val payloadMap = payload.asMap()
         val skademeldingPayload = objectMapper.treeToValue<SkadeforklaringMetrikkPayload>(payload)
         return InsertAllRequest.RowToInsert.of(
             mapOf(
@@ -62,7 +64,7 @@ val skadeforklaring_v1 = object : SchemaDefinition {
                 "callId" to skademeldingPayload.callId,
                 "innmelderrolle" to skademeldingPayload.innmelderrolle,
                 "antallVedleggTotalt" to skademeldingPayload.antallVedleggTotalt,
-                "antallVedleggPerType" to skademeldingPayload.antallVedleggPerType,
+                "antallVedleggPerType" to payloadMap["antallVedleggPerType"]
             )
         )
     }
