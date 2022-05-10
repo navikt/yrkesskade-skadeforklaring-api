@@ -32,8 +32,7 @@ import org.springframework.web.bind.annotation.RestController
 )
 class SkadeforklaringController(
     private val autentisertBruker: AutentisertBruker,
-    private val skadeforklaringService: SkadeforklaringService,
-    private val kodeverkValidator: KodeverkValidator
+    private val skadeforklaringService: SkadeforklaringService
 ) {
 
     @Operation(summary = "Send inn skadeforklaring")
@@ -48,30 +47,6 @@ class SkadeforklaringController(
     )
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun postSkadeforklaring(@Parameter(description = "skadeforklaring som skal sendes inn") @RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
-        check(skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "nei" || skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja", { "${skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt} er ikke en gyldig verdi erHelsepersonellOppsokt. Kan være 'ja' eller 'nei'" })
-        check(skadeforklaring.skalEttersendeDokumentasjon == "ja" || skadeforklaring.skalEttersendeDokumentasjon == "nei", { "${skadeforklaring.skalEttersendeDokumentasjon} er ikke en gyldig verdi skalEttersendeDokumentasjon. Kan være 'ja' eller 'nei'"})
-
-        if (skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja") {
-            check(skadeforklaring.helseinstitusjon.adresse != null, { "Adresse er påkrevd når erHelsepersonellOppsokt verdi er 'ja'"})
-        }
-        if (!skadeforklaring.helseinstitusjon.adresse?.postnummer.isNullOrBlank()) {
-            check(skadeforklaring.helseinstitusjon.adresse?.postnummer?.toIntOrNull() != null,
-                { "Postnummer kan kun bestå av siffer" })
-        }
-
-        kodeverkValidator.sjekkGyldigKodeverkverdi(
-            skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer,
-            "foerteDinSkadeEllerSykdomTilFravaer",
-            "'${skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer}' er ikke en gyldig verdi. Sjekk kodeverktjenesten 'foerteDinSkadeEllerSykdomTilFravaer' for gyldige verdier"
-        )
-        if (skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer != "nei" && skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer != "ikkeRelevant") {
-            kodeverkValidator.sjekkGyldigKodeverkverdi(
-                skadeforklaring.fravaer.fravaertype!!,
-                "fravaertype",
-                "'${skadeforklaring.fravaer.fravaertype}' er ikke en gyldig fravaertype. Sjekk kodeverktjenesten 'fravaertype' for gyldige verdier"
-            )
-        }
-
         skadeforklaringService.sendMelding(skadeforklaring, Spraak.NB)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
