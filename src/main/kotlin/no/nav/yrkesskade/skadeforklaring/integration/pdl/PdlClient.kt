@@ -3,13 +3,10 @@ package no.nav.yrkesskade.skadeforklaring.integration.pdl
 import com.expediagroup.graphql.client.spring.GraphQLWebClient
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import kotlinx.coroutines.runBlocking
-import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenService
-import no.nav.security.token.support.client.spring.ClientConfigurationProperties
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPerson
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersonMedForeldreansvar
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersoner
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.model.Person
 import no.nav.yrkesskade.skadeforklaring.security.TokenService
 import no.nav.yrkesskade.skadeforklaring.utils.getLogger
@@ -20,8 +17,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
-import org.testcontainers.shaded.com.trilead.ssh2.log.Logger.logger
-import org.testcontainers.shaded.org.bouncycastle.crypto.tls.ConnectionEnd.client
 
 @Component
 @Qualifier("PdlClient")
