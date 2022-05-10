@@ -7,6 +7,7 @@ import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenService
 import no.nav.security.token.support.client.spring.ClientConfigurationProperties
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
+import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPerson
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersonMedForeldreansvar
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersoner
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.model.Person
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
+import org.testcontainers.shaded.com.trilead.ssh2.log.Logger.logger
+import org.testcontainers.shaded.org.bouncycastle.crypto.tls.ConnectionEnd.client
 
 @Component
 @Qualifier("PdlClient")
@@ -73,23 +76,25 @@ class PdlClient(
         val hentetPerson = personResult?.hentPerson;
 
         if (hentetPerson != null) {
-            var subjekter = emptyList<Person>()
+            var subjekter = mutableListOf<Person>()
 
             val subjektidliste = hentetPerson.foreldreansvar.filter { it.ansvarssubjekt != null }.map {
                 it.ansvarssubjekt
             }
 
-            if (!subjektidliste.isEmpty()) {
-                subjekter = hentPersoner(subjektidliste as List<String>)?.hentPersonBolk?.map {
-                    Person(
-                        identifikator = it.ident,
-                        navn = it.person?.navn?.first()?.forkortetNavn.orEmpty(),
-                        foedselsaar = it.person?.foedsel?.first()?.foedselsaar!!,
-                        foedselsdato = it.person?.foedsel?.first().foedselsdato.orEmpty(),
-                        doedsdato = it.person?.doedsfall?.first().doedsdato,
+            subjektidliste.map {
+                if (!it.isNullOrBlank()) {
+                    val subjekt = hentPerson(it)?.hentPerson
+                    val person = Person(
+                        identifikator = it,
+                        navn = subjekt?.navn?.first()?.forkortetNavn.orEmpty(),
+                        foedselsaar = subjekt?.foedsel?.first()?.foedselsaar!!,
+                        foedselsdato = subjekt?.foedsel?.first().foedselsdato.orEmpty(),
+                        doedsdato = subjekt?.doedsfall?.first().doedsdato,
                         foreldreansvar = null
                     )
-                }!!
+                    subjekter.add(person)
+                }
             }
 
             return Person(
@@ -105,14 +110,14 @@ class PdlClient(
         return null
     }
 
-    private fun hentPersoner(fodselsnummerliste: List<String>): HentPersoner.Result? {
+    private fun hentPerson(norskIdentitetsnummer: String): HentPerson.Result? {
         val token = tokenService.getAppAccessTokenWithScope(tokenClientName)
-        val hentPersonerQuery = HentPersoner(HentPersoner.Variables(fodselsnummerliste))
+        val hentPersonQuery = HentPerson(HentPerson.Variables(norskIdentitetsnummer))
 
-        val personerResult: HentPersoner.Result?
+        val personResult: HentPerson.Result?
         runBlocking {
-            secureLogger.info("Henter person fra PDL for personer med fnr $fodselsnummerliste på url $pdlGraphqlUrl")
-            val response: GraphQLClientResponse<HentPersoner.Result> = client.execute(hentPersonerQuery) {
+            secureLogger.info("Henter person fra PDL for person med fnr $norskIdentitetsnummer på url $pdlGraphqlUrl")
+            val response: GraphQLClientResponse<HentPerson.Result> = client.execute(hentPersonQuery) {
                 headers {
                     it.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
                     it.add("Tema", "YRK")
@@ -123,7 +128,7 @@ class PdlClient(
                     )
                 }
             }
-            personerResult = response.data
+            personResult = response.data
             logger.info("Returnerte fra PDL, se securelogs for detaljer")
             secureLogger.info("Returnerte fra PDL, data: " + response.data)
             if (!response.errors.isNullOrEmpty()) {
@@ -133,6 +138,6 @@ class PdlClient(
             }
         }
 
-        return personerResult
+        return personResult
     }
 }

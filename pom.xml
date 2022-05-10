@@ -268,7 +268,7 @@
                             <schemaFile>${project.basedir}/src/main/resources/graphql/pdl.graphqls</schemaFile>
                             <queryFiles>
                                 <queryFile>${project.basedir}/src/main/resources/graphql/hentPersonMedForeldreansvar.graphql</queryFile>
-                                <queryFile>${project.basedir}/src/main/resources/graphql/hentPersoner.graphql</queryFile>
+                                <queryFile>${project.basedir}/src/main/resources/graphql/hentPerson.graphql</queryFile>
                             </queryFiles>
                         </configuration>
                     </execution>
