@@ -68,6 +68,16 @@ class SkadeforklaringControllerIT : AbstractTest() {
     }
 
     @Test
+    fun `send skadeforklaring -fravaertype ikke gyldig - autentisert`() {
+        val skadeforklaring = getEnkelskadeforklaringFravaerUgyldigFravaertype()
+
+        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+
+        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+    }
+
+    @Test
     fun `send skadeforklaring med bokstav i postnummer - autentisert`() {
         val skadeforklaring = getEnkelskadeforklaringMedFeilPostnummer()
 
