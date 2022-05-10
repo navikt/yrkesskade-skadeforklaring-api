@@ -54,8 +54,8 @@ class SkadeforklaringController(
         if (skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja") {
             check(skadeforklaring.helseinstitusjon.adresse != null, { "Adresse er påkrevd når erHelsepersonellOppsokt verdi er 'ja'"})
         }
-        if (skadeforklaring.helseinstitusjon.adresse?.postnummer != null) {
-            check(skadeforklaring.helseinstitusjon.adresse.postnummer.toIntOrNull() != null,
+        if (!skadeforklaring.helseinstitusjon.adresse?.postnummer.isNullOrBlank()) {
+            check(skadeforklaring.helseinstitusjon.adresse?.postnummer?.toIntOrNull() != null,
                 { "Postnummer kan kun bestå av siffer" })
         }
 

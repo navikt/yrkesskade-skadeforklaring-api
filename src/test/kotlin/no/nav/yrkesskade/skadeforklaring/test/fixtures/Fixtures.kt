@@ -93,3 +93,16 @@ fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
     fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "Sykemelding"),
     helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "ja", adresse = Adresse(adresse = "Ringveien 2", postnummer = "TEST", poststed = "Test"))
 )
+
+fun getEnkelskadeforklaringMedValgfriPostnummer() = Skadeforklaring(
+    saksnummer = null,
+    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
+    noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
+    tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
+    skalEttersendeDokumentasjon = "ja",
+    vedleggreferanser = emptyList(),
+    fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "Sykemelding"),
+    helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "ja", adresse = Adresse(adresse = null, postnummer = null, poststed = null))
+)
