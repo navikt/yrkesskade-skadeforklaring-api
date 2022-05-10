@@ -1,5 +1,6 @@
 logging.level.org.springframework: INFO
 logging.level.no.nav: DEBUG
+GCP_TEAM_PROJECT_ID: stub
 
 spring:
   main:
@@ -10,6 +11,10 @@ spring:
       auto-offset-reset: earliest
       group-id: yrkesskade-skadeforklaring
     client-id: yrkesskade-skadeforklaring
+  cloud:
+    gcp:
+      bigquery:
+        enabled: false
 
 service:
   wiremock:

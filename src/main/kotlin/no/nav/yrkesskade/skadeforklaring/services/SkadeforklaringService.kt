@@ -5,6 +5,7 @@ import no.nav.yrkesskade.skadeforklaring.integration.mottak.SkadeforklaringInnse
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.model.SkadeforklaringInnsendingHendelse
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.model.SkadeforklaringMetadata
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.model.Spraak
+import no.nav.yrkesskade.skadeforklaring.metric.MetricService
 import no.nav.yrkesskade.skadeforklaring.model.Skadeforklaring
 import no.nav.yrkesskade.skadeforklaring.utils.KodeverkValidator
 import no.nav.yrkesskade.skadeforklaring.utils.getSecureLogger
@@ -15,8 +16,9 @@ import java.time.Instant
 @Service
 class SkadeforklaringService(
     private val skadeforklaringInnsendingClient: SkadeforklaringInnsendingClient,
+    private val metricService: MetricService,
     private val kodeverkValidator: KodeverkValidator
-    ) {
+) {
 
     private val secureLog = getSecureLogger()
 
@@ -36,6 +38,7 @@ class SkadeforklaringService(
         )
         return skadeforklaringInnsendingClient.sendMelding(skadeforklaringInnsendingHendelse).also {
             secureLog.info("Sendt skadeforklaring $it til mottak")
+            metricService.insertMetrikk(skadeforklaringInnsendingHendelse)
         }
     }
 
