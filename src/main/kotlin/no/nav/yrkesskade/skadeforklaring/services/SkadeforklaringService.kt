@@ -48,6 +48,17 @@ class SkadeforklaringService(
      * Kaster exceptions dersom en validering feiler
      */
     private fun validerSkadeforklaring(skadeforklaring: Skadeforklaring, spraak: Spraak) {
+        check(skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "nei" || skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja", { "${skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt} er ikke en gyldig verdi erHelsepersonellOppsokt. Kan være 'ja' eller 'nei'" })
+        check(skadeforklaring.skalEttersendeDokumentasjon == "ja" || skadeforklaring.skalEttersendeDokumentasjon == "nei", { "${skadeforklaring.skalEttersendeDokumentasjon} er ikke en gyldig verdi skalEttersendeDokumentasjon. Kan være 'ja' eller 'nei'"})
+
+        if (skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja") {
+            check(skadeforklaring.helseinstitusjon.adresse != null, { "Adresse er påkrevd når erHelsepersonellOppsokt verdi er 'ja'"})
+        }
+        if (!skadeforklaring.helseinstitusjon.adresse?.postnummer.isNullOrBlank()) {
+            check(skadeforklaring.helseinstitusjon.adresse?.postnummer?.toIntOrNull() != null,
+                { "Postnummer kan kun bestå av siffer" })
+        }
+
         // valider fravaer
         kodeverkValidator.sjekkGyldigKodeverkverdi(skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer, "foerteDinSkadeEllerSykdomTilFravaer", "${skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer} er ikke en gyldig kode. Sjekk kodeverk 'foerteDinSkadeEllerSykdomTilFravaer' for gyldige koder")
 
