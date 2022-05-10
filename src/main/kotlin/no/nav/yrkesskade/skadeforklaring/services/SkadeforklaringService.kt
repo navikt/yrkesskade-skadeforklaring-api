@@ -45,7 +45,17 @@ class SkadeforklaringService(
      * Kaster exceptions dersom en validering feiler
      */
     private fun validerSkadeforklaring(skadeforklaring: Skadeforklaring, spraak: Spraak) {
+        // valider fravaer
         kodeverkValidator.sjekkGyldigKodeverkverdi(skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer, "foerteDinSkadeEllerSykdomTilFravaer", "${skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer} er ikke en gyldig kode. Sjekk kodeverk 'foerteDinSkadeEllerSykdomTilFravaer' for gyldige koder")
-        kodeverkValidator.sjekkGyldigKodeverkverdi(skadeforklaring.fravaer.fravaertype, "fravaertype", "${skadeforklaring.fravaer.fravaertype} er ikke en gyldig kode. Sjekk 'fravaertype' for gyldige koder")
+
+        // sjekk fravaertype dersom skadelidt har hatt fravaer
+        val harIkkeHattFravaer = listOf("nei", "ikkeRelevant")
+        if (!harIkkeHattFravaer.contains(skadeforklaring.fravaer.foerteDinSkadeEllerSykdomTilFravaer)) {
+            kodeverkValidator.sjekkGyldigKodeverkverdi(
+                skadeforklaring.fravaer.fravaertype!!,
+                "fravaertype",
+                "${skadeforklaring.fravaer.fravaertype} er ikke en gyldig kode. Sjekk 'fravaertype' for gyldige koder"
+            )
+        }
     }
 }
