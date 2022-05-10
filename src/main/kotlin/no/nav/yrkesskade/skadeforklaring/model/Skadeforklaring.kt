@@ -4,8 +4,8 @@ import javax.validation.constraints.Size
 
 data class Skadeforklaring(
     val saksnummer: String?,
-    val innmelder: Innmelder?,
-    val skadelidt: Skadelidt?,
+    val innmelder: Innmelder,
+    val skadelidt: Skadelidt,
     @Size(max = 1000)
     val arbeidetMedIUlykkesoeyeblikket: String,
     @Size(max = 2000)
