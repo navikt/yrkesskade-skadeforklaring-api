@@ -43,7 +43,7 @@ class PdlClientTest {
 
         val person = client.hentPersonMedForeldreansvar("12345678910")
 
-        assertThat(person?.navn).isEqualTo("Ola Normann")
+        assertThat(person?.navn).isEqualTo("Ola Espen Olsen")
         val foreldreansvar = person?.foreldreansvar
         assertThat(foreldreansvar?.size).isEqualTo(1)
     }

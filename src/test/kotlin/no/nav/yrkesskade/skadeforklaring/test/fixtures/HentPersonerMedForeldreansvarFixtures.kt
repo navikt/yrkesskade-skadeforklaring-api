@@ -15,7 +15,7 @@ fun okResponsPersonMedForeldreansvarFraPdl(): GraphQLClientResponse<HentPersonMe
 
 fun gyldigPersonMedForeldreansvar(): Person {
     return Person(
-        listOf(Navn("Ola Normann")),
+        listOf(Navn("Ola", "Espen", "Olsen")),
         listOf(Foedsel(2000, "01-01-2000")),
         listOf(Foreldreansvar("01234567890")),
         listOf(ForelderBarnRelasjon("0123456789"))

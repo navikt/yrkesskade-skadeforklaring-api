@@ -15,12 +15,12 @@ fun okResponsPersonerFraPdl(): GraphQLClientResponse<HentPersoner.Result> {
 
 fun gyldigePersonerMedNavnOgFoedsel(): List<HentPersonBolkResult> {
     return listOf(
-        HentPersonBolkResult("0123456789", gyldigPersonMedNavnOgFoedsel("Erik Olsen", 2000, "01-01-2000", null))
+        HentPersonBolkResult("0123456789", gyldigPersonMedNavnOgFoedsel("Erik", "Olsen", null, 2000, "01-01-2000", null))
     )
 }
 
-fun gyldigPersonMedNavnOgFoedsel(forkortetnavn: String, foedselsaar: Int, foedselsdato: String, doedsdato: String?) = Person(
-    listOf(Navn(forkortetnavn)),
+fun gyldigPersonMedNavnOgFoedsel(fornavn: String, etternavn: String, mellomnavn: String?, foedselsaar: Int, foedselsdato: String, doedsdato: String?) = Person(
+    listOf(Navn(fornavn, mellomnavn, etternavn)),
     listOf(Doedsfall(doedsdato)),
     listOf(Foedsel(foedselsaar, foedselsdato))
 )

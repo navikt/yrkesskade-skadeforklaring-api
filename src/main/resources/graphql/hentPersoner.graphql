@@ -4,7 +4,9 @@ query($identer: [ID!]!) {
     ident,
     person {
       navn {
-        forkortetNavn
+        fornavn,
+        mellomnavn,
+        etternavn
       },
       doedsfall{
         doedsdato

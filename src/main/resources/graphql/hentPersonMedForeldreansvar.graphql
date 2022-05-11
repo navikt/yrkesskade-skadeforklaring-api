@@ -1,7 +1,9 @@
 query($ident: ID!) {
     hentPerson(ident: $ident) {
     	navn {
-            forkortetNavn
+            fornavn,
+            mellomnavn,
+            etternavn
       },
     foedsel {
     	foedselsaar,

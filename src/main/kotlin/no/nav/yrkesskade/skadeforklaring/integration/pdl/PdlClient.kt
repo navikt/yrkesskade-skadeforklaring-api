@@ -7,6 +7,7 @@ import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersonMedForeldreansvar
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersoner
+import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentpersoner.Navn
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.model.Person
 import no.nav.yrkesskade.skadeforklaring.security.TokenService
 import no.nav.yrkesskade.skadeforklaring.utils.getLogger
@@ -81,9 +82,10 @@ class PdlClient(
 
             if (!subjektidliste.isEmpty()) {
                 subjekter = hentPersoner(subjektidliste as List<String>)?.hentPersonBolk?.map {
+                    val navn = lagNavn(it.person?.navn?.firstOrNull())
                     Person(
                         identifikator = it.ident,
-                        navn = it.person?.navn?.first()?.forkortetNavn.orEmpty(),
+                        navn = navn,
                         foedselsaar = it.person?.foedsel?.first()?.foedselsaar!!,
                         foedselsdato = it.person?.foedsel?.first().foedselsdato.orEmpty(),
                         doedsdato = it.person?.doedsfall?.firstOrNull()?.doedsdato,
@@ -92,9 +94,10 @@ class PdlClient(
                 }!!
             }
 
+            val navn = lagNavn(hentetPerson.navn.firstOrNull())
             return Person(
                 identifikator = fodselsnummer,
-                navn = hentetPerson.navn.first().forkortetNavn.orEmpty(),
+                navn = navn,
                 foedselsaar = hentetPerson.foedsel.first().foedselsaar!!,
                 foedselsdato = hentetPerson.foedsel.first().foedselsdato.orEmpty(),
                 foreldreansvar = subjekter,
@@ -103,6 +106,36 @@ class PdlClient(
         }
 
         return null
+    }
+
+    private fun lagNavn(navn: no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentpersoner.Navn?): String {
+        if (navn == null) {
+            return "Ukjent - ingen navn info fra PDL"
+        }
+
+        val navnBuilder = StringBuilder()
+        navnBuilder.append(navn.fornavn)
+        if (!navn.mellomnavn.isNullOrBlank()) {
+            navnBuilder.append(" ").append(navn.mellomnavn)
+        }
+        navnBuilder.append(" ").append(navn.etternavn)
+
+        return navnBuilder.toString()
+    }
+
+    private fun lagNavn(navn: no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentpersonmedforeldreansvar.Navn?): String {
+        if (navn == null) {
+            return "Ukjent - ingen navn info fra PDL"
+        }
+
+        val navnBuilder = StringBuilder()
+        navnBuilder.append(navn.fornavn)
+        if (!navn.mellomnavn.isNullOrBlank()) {
+            navnBuilder.append(" ").append(navn.mellomnavn)
+        }
+        navnBuilder.append(" ").append(navn.etternavn)
+
+        return navnBuilder.toString()
     }
 
     /**
