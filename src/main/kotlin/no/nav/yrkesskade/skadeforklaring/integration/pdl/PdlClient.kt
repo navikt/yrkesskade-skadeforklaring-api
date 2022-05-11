@@ -3,8 +3,6 @@ package no.nav.yrkesskade.skadeforklaring.integration.pdl
 import com.expediagroup.graphql.client.spring.GraphQLWebClient
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import kotlinx.coroutines.runBlocking
-import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenService
-import no.nav.security.token.support.client.spring.ClientConfigurationProperties
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersonMedForeldreansvar
@@ -33,7 +31,9 @@ class PdlClient(
         private val secureLogger = getSecureLogger()
     }
 
-    private val tokenClientName = "pdl";
+    private val tokenClientName = "pdl"
+    private val tokenMaskinTilMaskinClientName = "pdl-maskintilmaskin"
+
     private val client = GraphQLWebClient(url = pdlGraphqlUrl)
 
     /**
@@ -105,8 +105,11 @@ class PdlClient(
         return null
     }
 
+    /**
+     * Hent en bolk med personer
+     */
     private fun hentPersoner(fodselsnummerliste: List<String>): HentPersoner.Result? {
-        val token = tokenService.getAppAccessTokenWithScope(tokenClientName)
+        val token = tokenService.getAppAccessTokenWithScope(tokenMaskinTilMaskinClientName)
         val hentPersonerQuery = HentPersoner(HentPersoner.Variables(fodselsnummerliste))
 
         val personerResult: HentPersoner.Result?

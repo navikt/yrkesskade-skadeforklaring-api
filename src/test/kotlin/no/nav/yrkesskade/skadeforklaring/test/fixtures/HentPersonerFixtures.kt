@@ -15,8 +15,7 @@ fun okResponsPersonerFraPdl(): GraphQLClientResponse<HentPersoner.Result> {
 
 fun gyldigePersonerMedNavnOgFoedsel(): List<HentPersonBolkResult> {
     return listOf(
-        HentPersonBolkResult("0123456789", gyldigPersonMedNavnOgFoedsel("Erik Olsen", 2000, "01-01-2000", null)),
-        HentPersonBolkResult("2123449435", gyldigPersonMedNavnOgFoedsel("Hege Olsen", 2010, "01-01-2010", null))
+        HentPersonBolkResult("0123456789", gyldigPersonMedNavnOgFoedsel("Erik Olsen", 2000, "01-01-2000", null))
     )
 }
 
