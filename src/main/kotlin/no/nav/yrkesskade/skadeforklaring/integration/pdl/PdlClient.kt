@@ -5,8 +5,8 @@ import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import kotlinx.coroutines.runBlocking
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPerson
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersonMedForeldreansvar
+import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersoner
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.model.Person
 import no.nav.yrkesskade.skadeforklaring.security.TokenService
 import no.nav.yrkesskade.skadeforklaring.utils.getLogger
@@ -71,25 +71,23 @@ class PdlClient(
         val hentetPerson = personResult?.hentPerson;
 
         if (hentetPerson != null) {
-            var subjekter = mutableListOf<Person>()
+            var subjekter = emptyList<Person>()
 
             val subjektidliste = hentetPerson.foreldreansvar.filter { it.ansvarssubjekt != null }.map {
                 it.ansvarssubjekt
             }
 
-            subjektidliste.map {
-                if (!it.isNullOrBlank()) {
-                    val subjekt = hentPerson(it)?.hentPerson
-                    val person = Person(
-                        identifikator = it,
-                        navn = subjekt?.navn?.first()?.forkortetNavn.orEmpty(),
-                        foedselsaar = subjekt?.foedsel?.first()?.foedselsaar!!,
-                        foedselsdato = subjekt?.foedsel?.first().foedselsdato.orEmpty(),
-                        doedsdato = subjekt?.doedsfall?.first().doedsdato,
+            if (!subjektidliste.isEmpty()) {
+                subjekter = hentPersoner(subjektidliste as List<String>)?.hentPersonBolk?.map {
+                    Person(
+                        identifikator = it.ident,
+                        navn = it.person?.navn?.first()?.forkortetNavn.orEmpty(),
+                        foedselsaar = it.person?.foedsel?.first()?.foedselsaar!!,
+                        foedselsdato = it.person?.foedsel?.first().foedselsdato.orEmpty(),
+                        doedsdato = it.person?.doedsfall?.first().doedsdato,
                         foreldreansvar = null
                     )
-                    subjekter.add(person)
-                }
+                }!!
             }
 
             return Person(
@@ -105,14 +103,14 @@ class PdlClient(
         return null
     }
 
-    private fun hentPerson(norskIdentitetsnummer: String): HentPerson.Result? {
-        val token = tokenService.getAppAccessTokenWithScope(tokenClientName)
-        val hentPersonQuery = HentPerson(HentPerson.Variables(norskIdentitetsnummer))
+    private fun hentPersoner(fodselsnummerliste: List<String>): HentPersoner.Result? {
+        val token = tokenService.getAppAccessTokenWithScope("pdl-maskin-til-maskin")
+        val hentPersonerQuery = HentPersoner(HentPersoner.Variables(fodselsnummerliste))
 
-        val personResult: HentPerson.Result?
+        val personerResult: HentPersoner.Result?
         runBlocking {
-            secureLogger.info("Henter person fra PDL for person med fnr $norskIdentitetsnummer på url $pdlGraphqlUrl")
-            val response: GraphQLClientResponse<HentPerson.Result> = client.execute(hentPersonQuery) {
+            secureLogger.info("Henter person fra PDL for personer med fnr $fodselsnummerliste på url $pdlGraphqlUrl")
+            val response: GraphQLClientResponse<HentPersoner.Result> = client.execute(hentPersonerQuery) {
                 headers {
                     it.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
                     it.add("Tema", "YRK")
@@ -123,7 +121,7 @@ class PdlClient(
                     )
                 }
             }
-            personResult = response.data
+            personerResult = response.data
             logger.info("Returnerte fra PDL, se securelogs for detaljer")
             secureLogger.info("Returnerte fra PDL, data: " + response.data)
             if (!response.errors.isNullOrEmpty()) {
@@ -133,6 +131,6 @@ class PdlClient(
             }
         }
 
-        return personResult
+        return personerResult
     }
 }
