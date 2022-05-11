@@ -31,7 +31,9 @@ class PdlClient(
         private val secureLogger = getSecureLogger()
     }
 
-    private val tokenClientName = "pdl";
+    private val tokenClientName = "pdl"
+    private val tokenMaskinTilMaskinClientName = "pdl-maskintilmaskin"
+
     private val client = GraphQLWebClient(url = pdlGraphqlUrl)
 
     /**
@@ -103,8 +105,11 @@ class PdlClient(
         return null
     }
 
+    /**
+     * Hent en bolk med personer
+     */
     private fun hentPersoner(fodselsnummerliste: List<String>): HentPersoner.Result? {
-        val token = tokenService.getAppAccessTokenWithScope("pdl-maskin-til-maskin")
+        val token = tokenService.getAppAccessTokenWithScope(tokenMaskinTilMaskinClientName)
         val hentPersonerQuery = HentPersoner(HentPersoner.Variables(fodselsnummerliste))
 
         val personerResult: HentPersoner.Result?
