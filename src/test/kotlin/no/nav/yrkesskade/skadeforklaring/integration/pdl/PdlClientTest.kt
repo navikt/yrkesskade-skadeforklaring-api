@@ -5,8 +5,8 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPerson
 import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersonMedForeldreansvar
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersoner
 import no.nav.yrkesskade.skadeforklaring.security.TokenService
 import no.nav.yrkesskade.skadeforklaring.test.fixtures.okResponsPersonMedForeldreansvarFraPdl
 import no.nav.yrkesskade.skadeforklaring.test.fixtures.okResponsPersonerFraPdl
@@ -39,13 +39,13 @@ class PdlClientTest {
     @Test
     fun `skal hente person med foreldre ansvar`() {
         coEvery { graphQLWebClient.execute(ofType(HentPersonMedForeldreansvar::class), any()) } returns okResponsPersonMedForeldreansvarFraPdl()
-        coEvery { graphQLWebClient.execute(ofType(HentPersoner::class), any()) } returns okResponsPersonerFraPdl()
+        coEvery { graphQLWebClient.execute(ofType(HentPerson::class), any()) } returns okResponsPersonerFraPdl()
 
         val person = client.hentPersonMedForeldreansvar("12345678910")
 
         assertThat(person?.navn).isEqualTo("Ola Normann")
         val foreldreansvar = person?.foreldreansvar
-        assertThat(foreldreansvar?.size).isEqualTo(2)
+        assertThat(foreldreansvar?.size).isEqualTo(1)
     }
 
 }
