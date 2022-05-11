@@ -48,7 +48,10 @@ spec:
         - host: unleash.nais.io
   tokenx:
     enabled: true
-
+  azure:
+    application:
+      enabled: true
+      tenant: {{tenant}}
   envFrom:
     - configmap: loginservice-idporten
     - secret: yrkesskade-skadeforklaring-api

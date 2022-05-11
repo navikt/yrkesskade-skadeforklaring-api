@@ -2,39 +2,25 @@ package no.nav.yrkesskade.skadeforklaring.test.fixtures
 
 import com.expediagroup.graphql.client.jackson.types.JacksonGraphQLResponse
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPerson
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentperson.Doedsfall
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentperson.Foedsel
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentperson.Navn
-import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentperson.Person
-import kotlin.random.Random
+import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.HentPersoner
+import no.nav.yrkesskade.skadeforklaring.integration.pdl.graphql.generated.hentpersoner.*
 
-fun okResponsPersonerFraPdl(): GraphQLClientResponse<HentPerson.Result> {
+fun okResponsPersonerFraPdl(): GraphQLClientResponse<HentPersoner.Result> {
     return JacksonGraphQLResponse(
-        data = HentPerson.Result(gyldigePersonerMedNavnOgFoedsel()),
+        data = HentPersoner.Result(gyldigePersonerMedNavnOgFoedsel()),
         errors = null,
         extensions = emptyMap()
     )
 }
 
-fun gyldigePersonerMedNavnOgFoedsel(): Person {
+fun gyldigePersonerMedNavnOgFoedsel(): List<HentPersonBolkResult> {
     return listOf(
-        gyldigPersonMedNavnOgFoedsel("Erik Olsen", 2000, "01-01-2000", null),
-        gyldigPersonMedNavnOgFoedsel("Hege Olsen", 2010, "01-01-2010", null),
-        gyldigPersonMedNavnOgFoedsel("Sanne Olsen", 2000, "01-01-2000", null),
-        gyldigPersonMedNavnOgFoedsel("Cedrik Olsen", 2010, "01-01-2010", null),
-        gyldigPersonMedNavnOgFoedsel("Olaf Olsen", 2000, "01-01-2000", null),
-        gyldigPersonMedNavnOgFoedsel("Edda Olsen", 2010, "01-01-2010", null),
-        gyldigPersonMedNavnOgFoedsel("Åge Olsen", 2000, "01-01-2000", null),
-        gyldigPersonMedNavnOgFoedsel("Svein Olsen", 2010, "01-01-2010", null),
-        gyldigPersonMedNavnOgFoedsel("Harald Olsen", 2000, "01-01-2000", null),
-        gyldigPersonMedNavnOgFoedsel("Ester Olsen", 2010, "01-01-2010", null),
-    )[Random.nextInt(0, 9)]
-
+        HentPersonBolkResult("0123456789", gyldigPersonMedNavnOgFoedsel("Erik Olsen", 2000, "01-01-2000", null))
+    )
 }
 
 fun gyldigPersonMedNavnOgFoedsel(forkortetnavn: String, foedselsaar: Int, foedselsdato: String, doedsdato: String?) = Person(
     listOf(Navn(forkortetnavn)),
-    listOf(Foedsel(foedselsaar, foedselsdato)),
     listOf(Doedsfall(doedsdato)),
+    listOf(Foedsel(foedselsaar, foedselsdato))
 )

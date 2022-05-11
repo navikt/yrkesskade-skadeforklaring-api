@@ -47,3 +47,11 @@ no.nav.security.jwt:
           client-auth-method: private_key_jwt
         token-exchange:
           audience: dev-fss:pdl:pdl-api
+      pdl-maskintilmaskin:
+        token-endpoint-url: https://fakedings.dev-gcp.nais.io/fake/aad
+        grant-type: client_credentials
+        scope: pdl
+        authentication:
+          client-id: dummy-client-id
+          client-secret: dummy-secret
+          client-auth-method: client_secret_basic
