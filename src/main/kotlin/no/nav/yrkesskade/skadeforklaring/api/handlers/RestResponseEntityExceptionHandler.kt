@@ -4,8 +4,10 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import no.nav.yrkesskade.skadeforklaring.utils.getLogger
 import no.nav.yrkesskade.skadeforklaring.vedlegg.AttachmentVirusException
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -14,10 +16,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.multipart.MaxUploadSizeExceededException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import java.lang.invoke.MethodHandles
 import java.time.Instant
 
 @RestControllerAdvice
 class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
+    val log = getLogger(MethodHandles.lookup().lookupClass())
 
     @ExceptionHandler(IllegalStateException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -35,14 +39,7 @@ class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
     )
     fun handleIllegalStateException(
         ex: Exception, request: WebRequest
-    ): ResponseEntity<Any?>? {
-        val body = ErrorResponse(
-            melding = ex.message!!,
-            statuskode = HttpStatus.BAD_REQUEST.value(),
-            tidspunkt = Instant.now()
-        )
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body)
-    }
+    ): ResponseEntity<Any> = handleExceptionAndLogError(ex, request, HttpHeaders(), HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(AttachmentVirusException::class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -60,14 +57,7 @@ class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
     )
     fun handleAttachmentVirusFound(
         ex: Exception, request: WebRequest
-    ): ResponseEntity<Any?>? {
-        val body = ErrorResponse(
-            melding = ex.message!!,
-            statuskode = HttpStatus.UNPROCESSABLE_ENTITY.value(),
-            tidspunkt = Instant.now()
-        )
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body)
-    }
+    ): ResponseEntity<Any> = handleExceptionAndLogError(ex, request, HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY)
 
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,15 +75,7 @@ class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
     )
     fun handleAllExceptions(
         ex: Exception, request: WebRequest
-    ): ResponseEntity<Any?>? {
-        val body = ErrorResponse(
-            melding = ex.message!!,
-            statuskode = HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            tidspunkt = Instant.now()
-        )
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body)
-    }
+    ): ResponseEntity<Any> = handleExceptionAndLogError(ex, request, HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR)
 
     @ExceptionHandler(FileSizeLimitExceededException::class, MaxUploadSizeExceededException::class)
     @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
@@ -111,13 +93,10 @@ class RestResponseEntityExceptionHandler : ResponseEntityExceptionHandler() {
     )
     fun handleFileSizeLimitExceededException(
         ex: Exception, request: WebRequest
-    ): ResponseEntity<Any?>? {
-        val body = ErrorResponse(
-            melding = ex.message!!,
-            statuskode = HttpStatus.PAYLOAD_TOO_LARGE.value(),
-            tidspunkt = Instant.now()
-        )
+    ): ResponseEntity<Any> = handleExceptionAndLogError(ex, request, HttpHeaders(), HttpStatus.PAYLOAD_TOO_LARGE)
 
-        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(body)
+    private fun handleExceptionAndLogError(ex: Exception, request: WebRequest, headers: HttpHeaders, httpStatus: HttpStatus): ResponseEntity<Any> {
+        log.error("${ex.javaClass.simpleName}: ${ex.message} \n${ex.stackTraceToString()}")
+        return handleExceptionInternal(ex, ErrorResponse.fraException(ex, httpStatus.value()), headers, httpStatus, request)
     }
 }
