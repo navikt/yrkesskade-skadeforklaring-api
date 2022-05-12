@@ -2,12 +2,12 @@ name: "Build and deploy yrkesskade-skadeforklaring-api"
 on:
   push:
     branches:
-    - "main"
+    - dev
 env:
   IMAGE: "ghcr.io/${{ github.repository }}:${{ github.sha }}"
   LATEST: "ghcr.io/${{ github.repository }}:latest"
 jobs:
-  "build":
+  build:
     name: Build
     runs-on: "ubuntu-latest"
     permissions:
@@ -36,30 +36,29 @@ jobs:
         "password": "${{ secrets.GITHUB_TOKEN }}"
     - name: "Build and push the Docker image"
       run: "docker build --pull --tag ${IMAGE} --tag ${LATEST} . && docker push ${IMAGE} && docker push ${LATEST}"
-
-  deployAppToProd:
-    name: "Deploy app to PROD"
+  deployAppToDev:
+    name: "Deploy app to dev"
     needs: "build"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
-      - name: "Deploy to PROD"
-        uses: "nais/deploy/actions/deploy@v1"
-        env:
-          "APIKEY": "${{ secrets.NAIS_DEPLOY_APIKEY }}"
-          "CLUSTER": "prod-gcp"
-          "RESOURCE": ".nais/nais.yaml"
-          "VARS": ".nais/prod/vars.yaml"
-  deployAlertsToProd:
-    name: "Deploy alerts to PROD"
+    - uses: "actions/checkout@v2"
+    - name: "Deploy to DEV"
+      uses: "nais/deploy/actions/deploy@v1"
+      env:
+        "APIKEY": "${{ secrets.NAIS_DEPLOY_APIKEY }}"
+        "CLUSTER": "dev-gcp"
+        "RESOURCE": ".nais/nais.yaml"
+        "VARS": ".nais/dev/vars.yaml"
+  deployAlertsToDev:
+    name: "Deploy alerts to dev"
     needs: "build"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
-      - name: "Deploy alerts to PROD"
-        uses: "nais/deploy/actions/deploy@v1"
-        env:
-          "APIKEY": "${{ secrets.NAIS_DEPLOY_APIKEY }}"
-          "CLUSTER": "prod-gcp"
-          "RESOURCE": ".nais/prod/alerts.yaml"
-          "VARS": ".nais/prod/vars.yaml"
+    - uses: "actions/checkout@v2"
+    - name: "Deploy alerts to DEV"
+      uses: "nais/deploy/actions/deploy@v1"
+      env:
+        "APIKEY": "${{ secrets.NAIS_DEPLOY_APIKEY }}"
+        "CLUSTER": "dev-gcp"
+        "RESOURCE": ".nais/dev/alerts.yaml"
+        "VARS": ".nais/dev/vars.yaml"

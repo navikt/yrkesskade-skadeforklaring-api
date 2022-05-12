@@ -1,0 +1,7 @@
+ingresses:
+- "https://yrkesskade-skadeforklaring-api.dev.intern.nav.no"
+externalHosts:
+- host: pdl-api.prod-fss-pub.nais.io
+springProfile: prod
+kafkaPool: nav-prod
+tenant: nav.no
