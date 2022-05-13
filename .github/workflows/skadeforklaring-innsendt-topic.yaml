@@ -31,4 +31,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           VAR: kafka-pool=nav-prod
-          RESOURCE: .nais/prod/skademelding-innsendt-topic.yaml
+          RESOURCE: .nais/prod/skadeforklaring-innsendt-topic.yaml
