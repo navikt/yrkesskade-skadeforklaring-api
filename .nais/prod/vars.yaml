@@ -4,5 +4,6 @@ externalHosts:
 - host: pdl-api.prod-fss-pub.nais.io
 springProfile: prod
 kafkaPool: nav-prod
+gcpProjectId: yrkesskade-prod-453b
 tenant: nav.no
 vedleggBucketName: yrkesskade-skadeforklaring-vedlegg-prod
