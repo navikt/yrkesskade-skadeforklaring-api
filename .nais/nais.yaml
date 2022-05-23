@@ -5,6 +5,8 @@ metadata:
   namespace: "yrkesskade"
   labels:
     "team": "yrkesskade"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10M"
 spec:
   image: {{image}}
   liveness:
