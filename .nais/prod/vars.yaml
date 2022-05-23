@@ -5,3 +5,4 @@ externalHosts:
 springProfile: prod
 kafkaPool: nav-prod
 tenant: nav.no
+vedleggBucketName: yrkesskade-skadeforklaring-vedlegg-prod
