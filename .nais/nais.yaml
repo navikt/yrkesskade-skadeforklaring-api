@@ -78,7 +78,7 @@ spec:
       - name: yrkesskade_metrikker
         permission: READWRITE
     buckets:
-      - name: yrkesskade-skadeforklaring-vedlegg
+      - name: {{vedleggBucketName}}
         lifecycleCondition:
           age: 7
           numNewerVersions: 2
