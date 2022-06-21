@@ -28,6 +28,10 @@ kafka:
   topic:
     skadeforklaring-innsendt: privat-yrkesskade-skadeforklaringinnsendt
 
+logging:
+  level:
+    no.nav.security: DEBUG
+
 virusscan:
   enabled: false
 
