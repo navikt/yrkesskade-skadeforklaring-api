@@ -4,7 +4,6 @@ import no.nav.yrkesskade.kodeverk.model.KodeverdiDto
 import no.nav.yrkesskade.kodeverk.model.KodeverdiResponsDto
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor.Companion.CORRELATION_ID_HEADER_NAME
-import org.checkerframework.checker.units.qual.K
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Value
