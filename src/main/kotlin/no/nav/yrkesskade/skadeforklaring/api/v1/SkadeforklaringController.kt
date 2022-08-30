@@ -13,7 +13,6 @@ import no.nav.yrkesskade.skadeforklaring.security.AutentisertBruker
 import no.nav.yrkesskade.skadeforklaring.security.ISSUER
 import no.nav.yrkesskade.skadeforklaring.security.LEVEL
 import no.nav.yrkesskade.skadeforklaring.services.SkadeforklaringService
-import no.nav.yrkesskade.skadeforklaring.utils.KodeverkValidator
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -47,7 +46,7 @@ class SkadeforklaringController(
     )
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun postSkadeforklaring(@Parameter(description = "skadeforklaring som skal sendes inn") @RequestBody skadeforklaring: Skadeforklaring): ResponseEntity<Void> {
-        skadeforklaringService.sendMelding(skadeforklaring, Spraak.NB)
+        skadeforklaringService.validerOgSendMelding(skadeforklaring, Spraak.NB)
         return ResponseEntity.status(HttpStatus.CREATED).build()
     }
 
