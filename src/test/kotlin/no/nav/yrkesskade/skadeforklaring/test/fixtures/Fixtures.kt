@@ -5,8 +5,34 @@ import java.time.Instant
 
 fun getEnkelskadeforklaring() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = "Foresatt"),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = "Foresatt"),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
+    arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
+    noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
+    tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
+    skalEttersendeDokumentasjon = "ja",
+    vedleggreferanser = emptyList(),
+    fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "sykemelding"),
+    helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "nei", adresse = null)
+)
+
+fun getEnkelskadeforklaringUtenInnmeldersIdentitetsnummer() = Skadeforklaring(
+    saksnummer = null,
+    innmelder = Innmelder(norskIdentitetsnummer = "", innmelderrolle = "Foresatt"),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
+    arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
+    noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
+    tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
+    skalEttersendeDokumentasjon = "ja",
+    vedleggreferanser = emptyList(),
+    fravaer = Fravaer(foerteDinSkadeEllerSykdomTilFravaer = "treDagerEllerMindre", fravaertype = "sykemelding"),
+    helseinstitusjon = Helseinstitusjon(navn = "Test Testesen", erHelsepersonellOppsokt = "nei", adresse = null)
+)
+
+fun getEnkelskadeforklaringUtenSkadelidtsIdentitetsnummer() = Skadeforklaring(
+    saksnummer = null,
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = "Foresatt"),
+    skadelidt = Skadelidt(norskIdentitetsnummer = ""),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -18,8 +44,8 @@ fun getEnkelskadeforklaring() = Skadeforklaring(
 
 fun getEnkelskadeforklaringMedHelsepersonellOppsoekt() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = "Foresatt"),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = "Foresatt"),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -31,8 +57,8 @@ fun getEnkelskadeforklaringMedHelsepersonellOppsoekt() = Skadeforklaring(
 
 fun getEnkelskadeforklaringMedHelsepersonellOppsoektUtenAdresse() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = "Foresatt"),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = "Foresatt"),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -44,8 +70,8 @@ fun getEnkelskadeforklaringMedHelsepersonellOppsoektUtenAdresse() = Skadeforklar
 
 fun getEnkelskadeforklaringUgyldigFravaertype() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -57,8 +83,8 @@ fun getEnkelskadeforklaringUgyldigFravaertype() = Skadeforklaring(
 
 fun getEnkelskadeforklaringIngenFravaer() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -70,8 +96,8 @@ fun getEnkelskadeforklaringIngenFravaer() = Skadeforklaring(
 
 fun getEnkelskadeforklaringOenskerIkkeOppgiFravaer() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -83,8 +109,8 @@ fun getEnkelskadeforklaringOenskerIkkeOppgiFravaer() = Skadeforklaring(
 
 fun getEnkelskadeforklaringFravaerUgyldigFravaertype() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -96,8 +122,8 @@ fun getEnkelskadeforklaringFravaerUgyldigFravaertype() = Skadeforklaring(
 
 fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
@@ -109,8 +135,8 @@ fun getEnkelskadeforklaringMedFeilPostnummer() = Skadeforklaring(
 
 fun getEnkelskadeforklaringMedValgfriPostnummer() = Skadeforklaring(
     saksnummer = null,
-    innmelder = Innmelder(norskIdentitetsnummer = "12345678910", innmelderrolle = null),
-    skadelidt = Skadelidt(norskIdentitetsnummer = "123456798810"),
+    innmelder = Innmelder(norskIdentitetsnummer = "10117424370", innmelderrolle = null),
+    skadelidt = Skadelidt(norskIdentitetsnummer = "10117424370"),
     arbeidetMedIUlykkesoeyeblikket = "En kort arbeidsbeskrivelse",
     noeyaktigBeskrivelseAvHendelsen = "En litt lengre ulykkesbeskrivelse",
     tid = Tid(tidspunkt = Instant.now(), tidstype = Tidstype.TIDSPUNKT, periode = null),
