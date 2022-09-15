@@ -21,11 +21,4 @@ class AutentisertBruker(
                 claimSet.get(PID) as String
             }
         }
-
-    val jwtToken: String
-        get() =
-            tokenValidationContextHolder
-                .tokenValidationContext
-                .getJwtToken(ISSUER)
-                .tokenAsString
 }

@@ -49,8 +49,10 @@ class SkadeforklaringService(
      * Kaster exceptions dersom en validering feiler
      */
     private fun validerSkadeforklaring(skadeforklaring: Skadeforklaring, spraak: Spraak) {
-        check(skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "nei" || skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja", { "${skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt} er ikke en gyldig verdi erHelsepersonellOppsokt. Kan være 'ja' eller 'nei'" })
-        check(skadeforklaring.skalEttersendeDokumentasjon == "ja" || skadeforklaring.skalEttersendeDokumentasjon == "nei", { "${skadeforklaring.skalEttersendeDokumentasjon} er ikke en gyldig verdi skalEttersendeDokumentasjon. Kan være 'ja' eller 'nei'"})
+        check(skadeforklaring.erHelsepersonellOppsokt == "nei" || skadeforklaring.erHelsepersonellOppsokt == "ja", { "${skadeforklaring.erHelsepersonellOppsokt} er ikke en gyldig verdi erHelsepersonellOppsokt. Kan være 'ja' eller 'nei'" })
+
+        val gyldigEttersendingsverdier = listOf("ja", "nei", "ferdig")
+        check(gyldigEttersendingsverdier.contains(skadeforklaring.skalEttersendeDokumentasjon), { "${skadeforklaring.skalEttersendeDokumentasjon} er ikke en gyldig verdi skalEttersendeDokumentasjon. Kan være 'ja' eller 'nei'"})
 
         val innmelderNorskIdentitetsnummer = skadeforklaring.innmelder.norskIdentitetsnummer
         check(!innmelderNorskIdentitetsnummer.isNullOrEmpty(), {"Innmelders fødselsnummer kan ikke være null eller tom"})
@@ -65,12 +67,9 @@ class SkadeforklaringService(
             { "Skadelidts fødselsnummer er ugyldig. '$paavegneAvNorskIdentitetsnummer' er ikke gyldig norsk person identitetsnummer" })
 
 
-        if (skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja") {
-            check(skadeforklaring.helseinstitusjon.adresse != null, { "Adresse er påkrevd når erHelsepersonellOppsokt verdi er 'ja'"})
-        }
-        if (!skadeforklaring.helseinstitusjon.adresse?.postnummer.isNullOrBlank()) {
-            check(skadeforklaring.helseinstitusjon.adresse?.postnummer?.toIntOrNull() != null,
-                { "Postnummer kan kun bestå av siffer" })
+        if (skadeforklaring.erHelsepersonellOppsokt == "ja") {
+            check(skadeforklaring.foersteHelsepersonellOppsoktDato != null, { "foersteHelsepersonellOppsoktDato er påkrevd når erHelsepersonellOppsokt verdi er 'ja'"})
+            check(skadeforklaring.helseinstitusjoner.isNotEmpty(), {"helseinstitsjoner er påkrevd dersom erHelsepersonellOppsokt er 'ja'"})
         }
 
         // valider fravaer

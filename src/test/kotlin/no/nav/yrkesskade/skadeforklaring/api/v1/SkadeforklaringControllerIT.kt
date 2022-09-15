@@ -29,112 +29,107 @@ class SkadeforklaringControllerIT : AbstractTest() {
 
     @Test
     fun `send skadeforklaring - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaring()
+        var i = 0
+        while (i < 10) {
+            val skadeforklaring = getEnkelskadeforklaring()
 
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+            val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+            val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+            postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+
+            i++
+        }
     }
 
     @Test
     fun `send skadeforklaring med ugyldig fravaertype - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringUgyldigFravaertype()
+        var i = 0
+        while (i < 10) {
+            val skadeforklaring = getEnkelskadeforklaringUgyldigFravaertype()
 
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+            val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+            val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+
+            i++
+        }
     }
 
     @Test
     fun `send skadeforklaring uten fravaer - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringIngenFravaer()
+        var i = 0
+        while (i < 10) {
+            val skadeforklaring = getEnkelskadeforklaringIngenFravaer()
 
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+            val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+            val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+            postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+
+            i++
+        }
     }
 
     @Test
     fun `send skadeforklaring -fravaer ikke relevant - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringOenskerIkkeOppgiFravaer()
+        var i = 0
+        while (i < 10) {
+            val skadeforklaring = getEnkelskadeforklaringOenskerIkkeOppgiFravaer()
 
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+            val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+            val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+            postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
+
+            i++
+        }
     }
 
     @Test
     fun `send skadeforklaring - uten skadelidts identitetsnummer - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringUtenSkadelidtsIdentitetsnummer()
+        var i = 0
+        while (i < 10) {
+            val skadeforklaring = getEnkelskadeforklaringUtenSkadelidtsIdentitetsnummer()
 
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+            val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+            val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+
+            i++
+        }
     }
 
     @Test
     fun `send skadeforklaring - uten innmelders identitetsnummer - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringUtenInnmeldersIdentitetsnummer()
+        var i = 0
+        while (i < 10) {
+            val skadeforklaring = getEnkelskadeforklaringUtenInnmeldersIdentitetsnummer()
 
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+            val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+            val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
-    }
+            postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
 
-    @Test
-    fun `send skadeforklaring -fravaertype ikke gyldig - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringFravaerUgyldigFravaertype()
-
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
-
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
-    }
-
-    @Test
-    fun `send skadeforklaring med bokstav i postnummer - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringMedFeilPostnummer()
-
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
-
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
-    }
-
-    @Test
-    fun `send skadeforklaring med valgfri postnummer - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringMedValgfriPostnummer()
-
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
-
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            i++
+        }
     }
 
     @Test
     fun `send skadeforklaring med helsepersonell er oppsoekt - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringMedHelsepersonellOppsoekt()
+        var i = 0
+        while (i < 10) {
+            val skadeforklaring = getEnkelskadeforklaringMedHelsepersonellOppsoekt()
 
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
+            val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
+            val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
 
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
-    }
+            postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().isCreated)
 
-    @Test
-    fun `send skadeforklaring med helsepersonell er oppsoekt uten adresse - autentisert`() {
-        val skadeforklaring = getEnkelskadeforklaringMedHelsepersonellOppsoektUtenAdresse()
-
-        val jwt = mvc.perform(MockMvcRequestBuilders.get("/local/jwt")).andReturn().response.contentAsString
-        val skadeforklaringString = skadeforklaringTilString(skadeforklaring);
-
-        postSkadeforklaring(skadeforklaringString, jwt).andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            i++
+        }
     }
 
     private fun postSkadeforklaring(skadeforklaring: String, token: String) =
