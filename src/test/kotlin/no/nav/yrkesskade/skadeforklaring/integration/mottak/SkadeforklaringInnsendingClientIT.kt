@@ -22,8 +22,6 @@ class SkadeforklaringInnsendingClientIT : AbstractTest() {
     @Autowired
     private lateinit var skadeforklaringInnsendingClient: SkadeforklaringInnsendingClient
 
-    private val objectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-
     @Test
     fun `send melding til mottak`() {
         val skadeforklaring: Skadeforklaring = getEnkelskadeforklaring()
@@ -39,6 +37,6 @@ class SkadeforklaringInnsendingClientIT : AbstractTest() {
         assertThat(skadeforklaringInnsendingHendelse.metadata.spraak).isEqualTo(Spraak.NB)
         skadeforklaringInnsendingClient.sendMelding(skadeforklaringInnsendingHendelse)
         mottakConsumer.getLatch().await(10000, TimeUnit.MILLISECONDS)
-        assertThat(mottakConsumer.getPayload()).contains("\"norskIdentitetsnummer\":\"12345678910\"")
+        assertThat(mottakConsumer.getPayload()).contains("\"norskIdentitetsnummer\":\"${skadeforklaring.innmelder.norskIdentitetsnummer}\"")
     }
 }

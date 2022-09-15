@@ -1,5 +1,6 @@
 package no.nav.yrkesskade.skadeforklaring.services
 
+import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.yrkesskade.skadeforklaring.config.CorrelationInterceptor
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.SkadeforklaringInnsendingClient
 import no.nav.yrkesskade.skadeforklaring.integration.mottak.model.SkadeforklaringInnsendingHendelse
@@ -22,7 +23,7 @@ class SkadeforklaringService(
 
     private val secureLog = getSecureLogger()
 
-    fun sendMelding(
+    fun validerOgSendMelding(
         skadeforklaring: Skadeforklaring,
         spraak: Spraak
     ): SkadeforklaringInnsendingHendelse {
@@ -48,15 +49,27 @@ class SkadeforklaringService(
      * Kaster exceptions dersom en validering feiler
      */
     private fun validerSkadeforklaring(skadeforklaring: Skadeforklaring, spraak: Spraak) {
-        check(skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "nei" || skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja", { "${skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt} er ikke en gyldig verdi erHelsepersonellOppsokt. Kan være 'ja' eller 'nei'" })
-        check(skadeforklaring.skalEttersendeDokumentasjon == "ja" || skadeforklaring.skalEttersendeDokumentasjon == "nei", { "${skadeforklaring.skalEttersendeDokumentasjon} er ikke en gyldig verdi skalEttersendeDokumentasjon. Kan være 'ja' eller 'nei'"})
+        check(skadeforklaring.erHelsepersonellOppsokt == "nei" || skadeforklaring.erHelsepersonellOppsokt == "ja", { "${skadeforklaring.erHelsepersonellOppsokt} er ikke en gyldig verdi erHelsepersonellOppsokt. Kan være 'ja' eller 'nei'" })
 
-        if (skadeforklaring.helseinstitusjon.erHelsepersonellOppsokt == "ja") {
-            check(skadeforklaring.helseinstitusjon.adresse != null, { "Adresse er påkrevd når erHelsepersonellOppsokt verdi er 'ja'"})
-        }
-        if (!skadeforklaring.helseinstitusjon.adresse?.postnummer.isNullOrBlank()) {
-            check(skadeforklaring.helseinstitusjon.adresse?.postnummer?.toIntOrNull() != null,
-                { "Postnummer kan kun bestå av siffer" })
+        val gyldigEttersendingsverdier = listOf("ja", "nei", "ferdig")
+        check(gyldigEttersendingsverdier.contains(skadeforklaring.skalEttersendeDokumentasjon), { "${skadeforklaring.skalEttersendeDokumentasjon} er ikke en gyldig verdi skalEttersendeDokumentasjon. Kan være 'ja' eller 'nei'"})
+
+        val innmelderNorskIdentitetsnummer = skadeforklaring.innmelder.norskIdentitetsnummer
+        check(!innmelderNorskIdentitetsnummer.isNullOrEmpty(), {"Innmelders fødselsnummer kan ikke være null eller tom"})
+        check(
+            FodselsnummerValidator.isValid(innmelderNorskIdentitetsnummer),
+            { "Innmelders fødselsnummer er ugyldig. '$innmelderNorskIdentitetsnummer' er ikke gyldig norsk person identitetsnummer" })
+
+        val paavegneAvNorskIdentitetsnummer = skadeforklaring.skadelidt.norskIdentitetsnummer
+        check(!paavegneAvNorskIdentitetsnummer.isNullOrEmpty(), {"Skadelidts fødselsnummer kan ikke være null eller tom"})
+        check(
+            FodselsnummerValidator.isValid(paavegneAvNorskIdentitetsnummer),
+            { "Skadelidts fødselsnummer er ugyldig. '$paavegneAvNorskIdentitetsnummer' er ikke gyldig norsk person identitetsnummer" })
+
+
+        if (skadeforklaring.erHelsepersonellOppsokt == "ja") {
+            check(skadeforklaring.foersteHelsepersonellOppsoktDato != null, { "foersteHelsepersonellOppsoktDato er påkrevd når erHelsepersonellOppsokt verdi er 'ja'"})
+            check(skadeforklaring.helseinstitusjoner.isNotEmpty(), {"helseinstitsjoner er påkrevd dersom erHelsepersonellOppsokt er 'ja'"})
         }
 
         // valider fravaer
