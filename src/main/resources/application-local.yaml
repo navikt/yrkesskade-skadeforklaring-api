@@ -27,7 +27,7 @@ service:
 # bruk oneshot for å opprette topic
 kafka:
   topic:
-    skadeforklaring-innsendt: privat-yrkesskade-skadeforklaringinnsendt
+    skadeforklaring-innsendt: privat-yrkesskade-skadeforklaringinnsendt-v2
 
 virusscan:
   enabled: false
