@@ -19,6 +19,7 @@ class KafkaConfig(val kafkaProperties: KafkaProperties) {
         val props: MutableMap<String, Any> = HashMap(kafkaProperties.buildProducerProperties())
         props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
         props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
+        props[JsonSerializer.TYPE_MAPPINGS] = "SkadeforklaringInnsendingHendelseV2:no.nav.yrkesskade.skadeforklaring.integration.mottak.model.SkadeforklaringInnsendingHendelse"
         return props
     }
 

@@ -19,7 +19,7 @@ spring:
 
 kafka:
   topic:
-    skadeforklaring-innsendt: yrkesskade.privat-yrkesskade-skadeforklaringinnsendt
+    skadeforklaring-innsendt: yrkesskade.privat-yrkesskade-skadeforklaringinnsendt-v2
 
 virusscan:
   enabled: true
