@@ -1,2 +1,2 @@
 # yrkesskade-skadeforklaring-api
-Backend for skadeforklaring.
+Flyttet til monorepo @navikt/yrkesskade
